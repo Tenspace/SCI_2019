@@ -1,0 +1,64 @@
+[ERROR|kakaostoryCrawlerBot.py:157] 2019-01-15 16:28:25,187 > '05.04'
+Traceback (most recent call last):
+  File "C:/Users/tenspace/Desktop/crawlerBot_package_SCI/NotUsingJSONDATAType/kakaostoryCrawlerBot.py", line 154, in kakao_story_crawler_start
+    print(user_compct_info_title, ':', user_info[user_compct_info_value])
+KeyError: '05.04'
+[ERROR|kakaostoryCrawlerBot.py:157] 2019-01-15 16:34:14,497 > list index out of range
+Traceback (most recent call last):
+  File "C:/Users/tenspace/Desktop/crawlerBot_package_SCI/NotUsingJSONDATAType/kakaostoryCrawlerBot.py", line 134, in kakao_story_crawler_start
+    'div.story_widgets > div[data-part-name=myInfo] > div > h3')[0].text
+IndexError: list index out of range
+[ERROR|kakaostoryCrawlerBot.py:444] 2019-01-15 16:34:43,464 > [ Error ] MariaDB About information Insertion => 'int' object has no attribute 'replace'
+[ERROR|kakaostoryCrawlerBot.py:157] 2019-01-15 16:40:03,873 > list index out of range
+Traceback (most recent call last):
+  File "C:/Users/tenspace/Desktop/crawlerBot_package_SCI/NotUsingJSONDATAType/kakaostoryCrawlerBot.py", line 134, in kakao_story_crawler_start
+    'div.story_widgets > div[data-part-name=myInfo] > div > h3')[0].text
+IndexError: list index out of range
+[ERROR|kakaostoryCrawlerBot.py:444] 2019-01-15 16:40:20,998 > [ Error ] MariaDB About information Insertion => 'int' object has no attribute 'replace'
+[ERROR|kakaostoryCrawlerBot.py:157] 2019-01-15 16:40:23,212 > list index out of range
+Traceback (most recent call last):
+  File "C:/Users/tenspace/Desktop/crawlerBot_package_SCI/NotUsingJSONDATAType/kakaostoryCrawlerBot.py", line 134, in kakao_story_crawler_start
+    'div.story_widgets > div[data-part-name=myInfo] > div > h3')[0].text
+IndexError: list index out of range
+[ERROR|kakaostoryCrawlerBot.py:444] 2019-01-15 16:40:40,489 > [ Error ] MariaDB About information Insertion => 'int' object has no attribute 'replace'
+[ERROR|kakaostoryCrawlerBot.py:157] 2019-01-15 16:40:42,617 > list index out of range
+Traceback (most recent call last):
+  File "C:/Users/tenspace/Desktop/crawlerBot_package_SCI/NotUsingJSONDATAType/kakaostoryCrawlerBot.py", line 134, in kakao_story_crawler_start
+    'div.story_widgets > div[data-part-name=myInfo] > div > h3')[0].text
+IndexError: list index out of range
+[ERROR|kakaostoryCrawlerBot.py:444] 2019-01-15 16:41:09,438 > [ Error ] MariaDB About information Insertion => 'int' object has no attribute 'replace'
+[ERROR|kakaostoryCrawlerBot.py:157] 2019-01-15 16:41:11,649 > list index out of range
+Traceback (most recent call last):
+  File "C:/Users/tenspace/Desktop/crawlerBot_package_SCI/NotUsingJSONDATAType/kakaostoryCrawlerBot.py", line 134, in kakao_story_crawler_start
+    'div.story_widgets > div[data-part-name=myInfo] > div > h3')[0].text
+IndexError: list index out of range
+[ERROR|kakaostoryCrawlerBot.py:444] 2019-01-15 16:41:27,976 > [ Error ] MariaDB About information Insertion => 'int' object has no attribute 'replace'
+[ERROR|kakaostoryCrawlerBot.py:157] 2019-01-15 16:41:30,105 > list index out of range
+Traceback (most recent call last):
+  File "C:/Users/tenspace/Desktop/crawlerBot_package_SCI/NotUsingJSONDATAType/kakaostoryCrawlerBot.py", line 134, in kakao_story_crawler_start
+    'div.story_widgets > div[data-part-name=myInfo] > div > h3')[0].text
+IndexError: list index out of range
+[ERROR|kakaostoryCrawlerBot.py:444] 2019-01-15 16:41:46,940 > [ Error ] MariaDB About information Insertion => 'int' object has no attribute 'replace'
+[ERROR|kakaostoryCrawlerBot.py:157] 2019-01-15 16:41:49,048 > list index out of range
+Traceback (most recent call last):
+  File "C:/Users/tenspace/Desktop/crawlerBot_package_SCI/NotUsingJSONDATAType/kakaostoryCrawlerBot.py", line 134, in kakao_story_crawler_start
+    'div.story_widgets > div[data-part-name=myInfo] > div > h3')[0].text
+IndexError: list index out of range
+[ERROR|kakaostoryCrawlerBot.py:444] 2019-01-15 16:42:05,348 > [ Error ] MariaDB About information Insertion => 'int' object has no attribute 'replace'
+[ERROR|kakaostoryCrawlerBot.py:157] 2019-01-15 16:42:07,471 > list index out of range
+Traceback (most recent call last):
+  File "C:/Users/tenspace/Desktop/crawlerBot_package_SCI/NotUsingJSONDATAType/kakaostoryCrawlerBot.py", line 134, in kakao_story_crawler_start
+    'div.story_widgets > div[data-part-name=myInfo] > div > h3')[0].text
+IndexError: list index out of range
+[ERROR|kakaostoryCrawlerBot.py:444] 2019-01-15 16:42:24,458 > [ Error ] MariaDB About information Insertion => 'int' object has no attribute 'replace'
+[ERROR|kakaostoryCrawlerBot.py:157] 2019-01-15 16:42:26,622 > list index out of range
+Traceback (most recent call last):
+  File "C:/Users/tenspace/Desktop/crawlerBot_package_SCI/NotUsingJSONDATAType/kakaostoryCrawlerBot.py", line 134, in kakao_story_crawler_start
+    'div.story_widgets > div[data-part-name=myInfo] > div > h3')[0].text
+IndexError: list index out of range
+[ERROR|kakaostoryCrawlerBot.py:444] 2019-01-15 16:42:42,920 > [ Error ] MariaDB About information Insertion => 'int' object has no attribute 'replace'
+[ERROR|kakaostoryCrawlerBot.py:157] 2019-01-15 16:42:45,026 > list index out of range
+Traceback (most recent call last):
+  File "C:/Users/tenspace/Desktop/crawlerBot_package_SCI/NotUsingJSONDATAType/kakaostoryCrawlerBot.py", line 134, in kakao_story_crawler_start
+    'div.story_widgets > div[data-part-name=myInfo] > div > h3')[0].text
+IndexError: list index out of range
