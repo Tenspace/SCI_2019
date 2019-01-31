@@ -2,32 +2,6 @@ import random
 
 class GenNumEngine:
 
-    #긍정, 부정 표현을 제외한 나머지 항목들의 값들에 대해 무작위 생성 함수를 만들고자 한다.
-    #friends_residence
-    #friends_company
-    #friends_univ
-    #friends_highschool
-    #friends_native
-    #feeling_cnt
-    #like_all_cnt
-    #like_movie_cnt
-    #like_tv_cnt
-    #like_music_cnt
-    #like_book_cnt
-    #like_sports_cnt
-    #like_athlete_cnt
-    #like_restaurant_cnt
-    #like_appgame_cnt
-    #check_in
-    #event
-    #review
-    #reply_cnt
-    #place_cnt
-    #album_category_cnt
-    #video_tag_oneself_cnt
-    #video_cnt
-    #operation_year_period
-
     def getCntInfo_kakao(self):
 
         feeling_cnt= random.randint(1, 500)
@@ -71,3 +45,23 @@ class GenNumEngine:
                       check_in, event, review, album_category_cnt, video_tag_oneself_cnt, operation_year_period]
 
         return returnListFaceValue
+
+
+    def getCntInfo_instagram(self):
+        following_cnt = random.randint(1,500)
+        follower_cnt = random.randint(1, 500)
+        like_cnt= random.randint(1, 400)
+        comment_cnt= random.randint(1, 500)
+        share_cnt= random.randint(1, 500)
+        place_add= random.randint(1, 250)
+        post_cnt= random.randint(1, 400)
+        photo_cnt= random.randint(1, 400)
+        friends_continuous_exchange= random.randint(1, 100)
+        friends_rating_index= random.randint(1, 100)
+        contents_regular= random.randint(1, 100)
+        video_cnt= random.randint(1, 400)
+
+        returnListInstaValue = [following_cnt, follower_cnt, like_cnt, comment_cnt, share_cnt, place_add,
+                               post_cnt, photo_cnt, friends_continuous_exchange, friends_rating_index, contents_regular, video_cnt]
+
+        return returnListInstaValue

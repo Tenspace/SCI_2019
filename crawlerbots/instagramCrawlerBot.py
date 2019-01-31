@@ -208,6 +208,61 @@ def info(href):
         print()
     driver.close()
 
+    '''
+    expression_negative
+    expression_positive
+    following_cnt
+    follower_cnt
+    like_cnt
+    comment_cnt
+    share_cnt
+    place_add
+    post_cnt
+    photo_cnt
+    video_cnt
+    friends_continuous_exchange
+    friends_rating_index
+    contents_regular
+    '''
+
+    # DB insert
+    try:
+        # Server Connection to MySQL
+        db = db_mysql_connection_SCI.DatabaseConnection()
+        db.kakao_insert(
+            'instagram',  # platform
+            user,  # page_id
+            str(user_info['이름']),  # username
+            str(user_info['성별']),  # gender
+            str(user_info['거주지']),  # address
+            str(user_info['생일']),  # birthday
+            str(user_info['직장']),  # company1
+            str(user_info['학교']),  # university1
+            'expression_negative',
+            'expression_positive',
+            str(user_info['소식받는수']),  # take_news
+            str(user_info['관심글']),  # post_interest
+            str(user_info['up한글']),  # post_up
+            str(generateNumKakaoResult[0]),  # feeling_cnt
+            str(generateNumKakaoResult[1]),  # reply_cnt
+            str(all_share_cnt),  # share_cnt
+            str(generateNumKakaoResult[2]),  # place_cnt
+            str(all_place_cnt),  # place_add
+            str(user_info['스토리'].replace(",", "").replace("개", "")),  # post_cnt
+            str(user_info['사진']),  # photo_cnt
+            str(generateNumKakaoResult[3]),  # video_cnt
+            'operation_year_period',
+            'friends_continuous_exchange',
+            'friends_rating_index',
+            'friends_correlation_score',
+            'contents_regular'
+            # user_info['한줄소개']
+            # user_info['한줄음악']
+            # user_info['up']
+        )
+    except Exception as e_maria:
+        logger.error(msg=e_maria)
+
 
 if __name__ == "__main__":
     start_time_all = time.time()
