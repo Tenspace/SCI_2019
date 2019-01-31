@@ -8,6 +8,7 @@ from selenium import webdriver
 from multiprocessing import Pool
 
 from crawlerBot_pack_SCI_2019.crawlerbots import db_mysql_connection_SCI
+from crawlerBot_pack_SCI_2019.crawlerbots import generateNumEngine as gen
 global returnValue_kks_CSVData
 global returnValue_kks_singleData
 global hereWork
@@ -209,8 +210,6 @@ def info(href):
     driver.close()
 
     '''
-    expression_negative
-    expression_positive
     following_cnt
     follower_cnt
     like_cnt
@@ -223,7 +222,12 @@ def info(href):
     friends_continuous_exchange
     friends_rating_index
     contents_regular
+    
+    expression_negative
+    expression_positive
     '''
+
+    generateNumInstaResult = gen.GenNumEngine.getCntInfo_instagram(gen.GenNumEngine)
 
     # DB insert
     try:
@@ -232,33 +236,20 @@ def info(href):
         db.kakao_insert(
             'instagram',  # platform
             user,  # page_id
-            str(user_info['이름']),  # username
-            str(user_info['성별']),  # gender
-            str(user_info['거주지']),  # address
-            str(user_info['생일']),  # birthday
-            str(user_info['직장']),  # company1
-            str(user_info['학교']),  # university1
+            str(generateNumInstaResult[0]),  # following_cnt
+            str(generateNumInstaResult[1]),  # follower_cnt
+            str(generateNumInstaResult[2]),  # like_cnt
+            str(generateNumInstaResult[3]),  # comment_cnt
+            str(generateNumInstaResult[4]),  # share_cnt
+            str(generateNumInstaResult[5]),  # place_add
             'expression_negative',
             'expression_positive',
-            str(user_info['소식받는수']),  # take_news
-            str(user_info['관심글']),  # post_interest
-            str(user_info['up한글']),  # post_up
-            str(generateNumKakaoResult[0]),  # feeling_cnt
-            str(generateNumKakaoResult[1]),  # reply_cnt
-            str(all_share_cnt),  # share_cnt
-            str(generateNumKakaoResult[2]),  # place_cnt
-            str(all_place_cnt),  # place_add
-            str(user_info['스토리'].replace(",", "").replace("개", "")),  # post_cnt
-            str(user_info['사진']),  # photo_cnt
-            str(generateNumKakaoResult[3]),  # video_cnt
-            'operation_year_period',
-            'friends_continuous_exchange',
-            'friends_rating_index',
-            'friends_correlation_score',
-            'contents_regular'
-            # user_info['한줄소개']
-            # user_info['한줄음악']
-            # user_info['up']
+            str(generateNumInstaResult[6]),  # post_cnt
+            str(generateNumInstaResult[7]),  # photo_cnt
+            str(generateNumInstaResult[8]),  # video_cnt
+            str(generateNumInstaResult[9]),  # friends_continuous_exchange
+            str(generateNumInstaResult[10]),  # friends_rating_index
+            str(generateNumInstaResult[11])   # contents_regular
         )
     except Exception as e_maria:
         logger.error(msg=e_maria)

@@ -12,3 +12,6 @@ print(generateNumKakaoResult)
 
 generateNumFaceResult = gen.GenNumEngine.getCntInfo_face(gen.GenNumEngine)
 print(generateNumFaceResult)
+
+generateNumInstaResult = gen.GenNumEngine.getCntInfo_instagram(gen.GenNumEngine)
+print(generateNumInstaResult)
