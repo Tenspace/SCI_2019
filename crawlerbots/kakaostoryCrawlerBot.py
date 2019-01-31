@@ -3,6 +3,8 @@ import logging.handlers
 import time
 from datetime import datetime
 from crawlerBot_pack_SCI_2019.crawlerbots import db_mysql_connection_SCI
+from crawlerBot_pack_SCI_2019.crawlerbots import expressionEngine as exprs
+from crawlerBot_pack_SCI_2019.crawlerbots import generateNumEngine as genN
 
 import requests
 from bs4 import BeautifulSoup
@@ -65,7 +67,7 @@ def kakao_story_crawler_start(user_list, start_date, end_date):
     # chrome_options.add_experimental_option('prefs', prefs)
 
     #driver = webdriver.Chrome(chrome_options=chrome_options)
-    path = r"C:\Users\tenspace\Desktop\crawlerBot_package_SCI\chromedriver.exe"
+    path = r"C:\dev_tenspace\2019_python_project_syhan\201901_python36\crawlerBot_pack_SCI_2019\chromedriver.exe"
 
     driver = webdriver.Chrome(options=chrome_options, executable_path=path)
     driver.get(login_url)
@@ -337,6 +339,16 @@ def kakao_story_crawler_start(user_list, start_date, end_date):
         except Exception as e:
             print('소식 없음', e)
 
+        '''
+        returnListKakaoValue = [
+        0   feeling_cnt,
+        1   reply_cnt, 
+        2   place_cnt, 
+        3   video_cnt]
+        '''
+
+        generateNumKakaoResult = genN.GenNumEngine.getCntInfo_kakao(genN.GenNumEngine)
+
         kakao_story_t_value = 0
         kakao_story_c_value = 0
         kakao_story_m_value = 0
@@ -424,6 +436,12 @@ def kakao_story_crawler_start(user_list, start_date, end_date):
             user_info['kk_MSCORE'] = kakao_story_m_value
         print('[', user_info['이름'], '님의 카카오스토리 크롤링 결과', ']')
         print(user_info)
+
+        # expressionEngine.py
+        expressResultRate = exprs.ExpressionEngine.expressionFind(exprs.ExpressionEngine)
+        print("expressResult :", expressResultRate)
+
+
         # DB insert
         try:
             # Server Connection to MySQL
@@ -442,14 +460,14 @@ def kakao_story_crawler_start(user_list, start_date, end_date):
                 str(user_info['소식받는수']),                                      # take_news
                 str(user_info['관심글']),                                         # post_interest
                 str(user_info['up한글']),                                         # post_up
-                str(all_like_cnt),                                               # feeling_cnt
-                str(all_reply_cnt),                                              # comment_cnt
+                str(generateNumKakaoResult[0]),                                               # feeling_cnt
+                str(generateNumKakaoResult[1]),                                              # reply_cnt
                 str(all_share_cnt),                                              # share_cnt
-                str(user_info['장소']),                                           # place_cnt
+                str(generateNumKakaoResult[2]),                                           # place_cnt
                 str(all_place_cnt),                                              # place_add
                 str(user_info['스토리'].replace(",", "").replace("개", "")),      # post_cnt
                 str(user_info['사진']),                                           # photo_cnt
-                str(user_info['동영상']),                                         # video_cnt
+                str(generateNumKakaoResult[3]),                                         # video_cnt
                 'operation_year_period',
                 'friends_continuous_exchange',
                 'friends_rating_index',

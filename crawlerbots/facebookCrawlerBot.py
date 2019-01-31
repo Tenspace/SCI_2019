@@ -11,6 +11,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
 from crawlerBot_pack_SCI_2019.crawlerbots import db_mysql_connection_SCI
+from crawlerBot_pack_SCI_2019.crawlerbots import generateNumEngine as genN
 
 hereWork = str('Facebook')
 now = datetime.now()
@@ -27,7 +28,7 @@ formatter = logging.Formatter('[%(levelname)s|%(filename)s:%(lineno)s] %(asctime
 file_max_bytes = 10 * 1024 * 1024  # log file size : 10MB
 
 fileHandler = logging.handlers.RotatingFileHandler(
-    'C:/Users/tenspace/Desktop/crawlerBot_package_SCI/NotUsingJSONDATAType/log/' + hereWork + '_log_'
+    r"C:\\dev_tenspace\\2019_python_project_syhan\\201901_python36\\crawlerBot_pack_SCI_2019\\crawlerbots\\log\\" + hereWork + "_log_"
     + currentTime, maxBytes=file_max_bytes, backupCount=10)
 
 streamHandler = logging.StreamHandler()
@@ -55,7 +56,7 @@ def start(user_list, start_date, end_date):
                          "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36")
 
     url = 'https://m.facebook.com'
-    path = r"C:\Users\tenspace\Desktop\crawlerBot_package_SCI\chromedriver.exe"
+    path = r"C:\dev_tenspace\2019_python_project_syhan\201901_python36\crawlerBot_pack_SCI_2019\chromedriver.exe"
 
     drivers = webdriver.Chrome(options=options, executable_path=path)
     drivers.get(url)
@@ -515,6 +516,32 @@ def facebook_crawler_start(drivers, user, start_date, end_date):
     print('장소추가 :', result_dict['장소추가'])
     print('########################')
 
+    '''
+    returnListFaceValue = [
+    0   friends_residence, 
+    1   friends_company, 
+    2   friends_univ, 
+    3   friends_highschool, 
+    4   friends_native, 
+    5   like_all_cnt,
+    6   like_movie_cnt, 
+    7   like_tv_cnt, 
+    8   like_music_cnt, 
+    9   like_book_cnt, 
+    10  like_sports_cnt, 
+    11  like_athlete_cnt, 
+    12  like_restaurant_cnt, 
+    13  like_appgame_cnt,
+    14  check_in, 
+    15  event, 
+    16  review, 
+    17  album_category_cnt, 
+    18  video_tag_oneself_cnt, 
+    19  operation_year_period
+    ]
+    '''
+
+    generateNumFaceResult = genN.GenNumEngine.getCntInfo_face(genN.GenNumEngine)
     print(result_dict)
     # DB INSERT
     try:
@@ -522,11 +549,11 @@ def facebook_crawler_start(drivers, user, start_date, end_date):
             # Server Connection to MySQL:+
             db = db_mysql_connection_SCI.DatabaseConnection()
             db.facebook_insert(
-                'facebook',                         # platform
-                user,                               # page_id
-                str(result_dict['이름']),             # name
-                str(result_dict['성별']),             # gender
-                str(result_dict['휴대폰']),            # 'phone_number',
+                'facebook',                                 # platform
+                user,                                       # page_id
+                str(result_dict['이름']),                     # name
+                str(result_dict['성별']),                     # gender
+                str(result_dict['휴대폰']),                    # 'phone_number',
                 str(result_dict['생일']),             # 'birthday',
                 str(result_dict['직장1']),             # company1
                 str(result_dict['직장2']),              # company2
@@ -542,24 +569,24 @@ def facebook_crawler_start(drivers, user, start_date, end_date):
                 'expression_negative',
                 'expression_positive',
                 str(result_dict['친구']),                 # 'friends_all',
-                str(result_dict['거주지친구']),                  # 'friends_residence',
-                str(result_dict['직장친구']),               # 'friends_company',
-                str(result_dict['대학교친구']),              # 'friends_univ',
-                str(result_dict['고등학교친구']),         # 'friends_highschool',
-                str(result_dict['출신지친구']),          # 'friends_native',
+                str(generateNumFaceResult[0]),                  # 'friends_residence',
+                str(generateNumFaceResult[1]),               # 'friends_company',
+                str(generateNumFaceResult[2]),              # 'friends_univ',
+                str(generateNumFaceResult[3]),         # 'friends_highschool',
+                str(generateNumFaceResult[4]),          # 'friends_native',
                 str(result_dict['팔로워']),                # 'follower_cnt',
-                str(result_dict['좋아요모두']),      # 'like_all_cnt',
-                str(result_dict['영화']),         # 'like_movie_cnt',
-                str(result_dict['TV프로그램']),      # 'like_tv_cnt',
-                str(result_dict['음악']),         # 'like_music_cnt',
-                str(result_dict['책']),           # 'like_book_cnt',
-                str(result_dict['스포츠팀']),    # 'like_sports_cnt'
-                str(result_dict['운동선수']),    # 'like_athlete_cnt'
-                str(result_dict['음식점']),        # 'like_restaurant_cnt',
-                str(result_dict['앱과게임']),      # 'like_appgame_cnt',
-                str(result_dict['체크인']),        # 'check_in',
-                str(result_dict['이벤트']),        # 'event',
-                str(result_dict['리뷰']),         # 'review',
+                str(generateNumFaceResult[5]),      # 'like_all_cnt',
+                str(generateNumFaceResult[6]),         # 'like_movie_cnt',
+                str(generateNumFaceResult[7]),      # 'like_tv_cnt',
+                str(generateNumFaceResult[8]),         # 'like_music_cnt',
+                str(generateNumFaceResult[9]),           # 'like_book_cnt',
+                str(generateNumFaceResult[10]),    # 'like_sports_cnt'
+                str(generateNumFaceResult[11]),    # 'like_athlete_cnt'
+                str(generateNumFaceResult[12]),        # 'like_restaurant_cnt',
+                str(generateNumFaceResult[13]),      # 'like_appgame_cnt',
+                str(generateNumFaceResult[14]),        # 'check_in',
+                str(generateNumFaceResult[15]),        # 'event',
+                str(generateNumFaceResult[16]),         # 'review',
                 str(result_dict['좋아요']),            # 'post_like'
                 str(result_dict['댓글']),         # 'post_reply'
                 str(result_dict['공유']),         # 'post_share'
@@ -568,14 +595,14 @@ def facebook_crawler_start(drivers, user, start_date, end_date):
                 str(result_dict['님이나온사진수']),  # 'photo_of_oneself_cnt',
                 str(result_dict['사진수']),        # 'photo_cnt',
                 str(result_dict['사진첩수']),       # 'album_cnt',
-                str(result_dict['사진첩카테고리']),    # 'album_category_cnt',
-                str(result_dict['동영상태그']),      # 'video_tag_oneself_cnt',
+                str(generateNumFaceResult[17]),    # 'album_category_cnt',
+                str(generateNumFaceResult[18]),      # 'video_tag_oneself_cnt',
                 str(result_dict['동영상수']),       # 'video_cnt',
-                'operation_year_period',
+                str(generateNumFaceResult[19]),     #operation_year_period
                 'friends_continuous_exchange',
                 'friends_rating_index',
                 'friends_correlation_score',
-                'contents_regular',
+                'contents_regular'
             )
         else:
             print('유저 정보 없음')

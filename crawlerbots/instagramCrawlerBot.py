@@ -3,17 +3,16 @@
 
 import logging.handlers
 import time
-import re
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from multiprocessing import Pool
-from selenium.webdriver.chrome.options import Options
-from crawlerbots import mysqlConnection
+
+from crawlerBot_pack_SCI_2019.crawlerbots import db_mysql_connection_SCI
 global returnValue_kks_CSVData
 global returnValue_kks_singleData
 global hereWork
 
-hereWork = 'KakaoStory'
+hereWork = 'Instagram'
 
 currentTime = str(time.localtime().tm_year) + '_' + str(time.localtime().tm_mon) + '_' + str(
     time.localtime().tm_mday) + '_' + str(time.localtime().tm_hour)
