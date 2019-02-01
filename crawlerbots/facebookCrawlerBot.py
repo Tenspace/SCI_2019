@@ -12,6 +12,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 
 from crawlerBot_pack_SCI_2019.crawlerbots import db_mysql_connection_SCI
 from crawlerBot_pack_SCI_2019.crawlerbots import generateNumEngine as genN
+from crawlerBot_pack_SCI_2019.crawlerbots import expressionEngine as exprs
 
 hereWork = str('Facebook')
 now = datetime.now()
@@ -540,6 +541,10 @@ def facebook_crawler_start(drivers, user, start_date, end_date):
     19  operation_year_period
     ]
     '''
+
+    # expressionEngine.py
+    expressResultRate = exprs.ExpressionEngine.expressionFind(exprs.ExpressionEngine)
+    print("expressResult :", expressResultRate)
 
     generateNumFaceResult = genN.GenNumEngine.getCntInfo_face(genN.GenNumEngine)
     print(result_dict)

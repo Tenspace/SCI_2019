@@ -25,10 +25,10 @@ class ExpressionEngine:
             cntr += 1
         # second word list size: len(snd_wordList) #100
         # matching with json data and score on each word
-        expressionResult = self.data_list(self, snd_wordList)
+        expressionRateResult = self.data_list(self, snd_wordList)
 
-        if expressionResult != "None":
-            return expressionResult
+        if expressionRateResult != "None":
+            return expressionRateResult
         else:
             return None
 
@@ -63,13 +63,13 @@ class ExpressionEngine:
             print('root_word : ' + root_word)
             print('polar_word : ' + polar_word)
 
+        # calculate expressionRateResult
         # 100개의 단어 중 polarity 7의 개수/ 15의 개수 / 30의 개수
 
 
 
 
 
-    #def gererateExpressionRate(self):
 
 # For TEST
 # if __name__ == "__main__":
