@@ -468,11 +468,11 @@ def kakao_story_crawler_start(user_list, start_date, end_date):
                 str(user_info['스토리'].replace(",", "").replace("개", "")),      # post_cnt
                 str(user_info['사진']),                                           # photo_cnt
                 str(generateNumKakaoResult[3]),                                         # video_cnt
-                'operation_year_period',
-                'friends_continuous_exchange',
-                'friends_rating_index',
-                'friends_correlation_score',
-                'contents_regular'
+                'NULL',                                                         # operation_year_period
+                str(generateNumKakaoResult[4]),                                 # friends_continuous_exchange
+                str(generateNumKakaoResult[5]),                                 # friends_rating_index
+                'NULL',                                                         # friends_correlation_score
+                'NULL'                                                          # contents_regular
                 # user_info['한줄소개']
                 # user_info['한줄음악']
                 # user_info['up']

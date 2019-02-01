@@ -8,8 +8,10 @@ class GenNumEngine:
         reply_cnt= random.randint(1, 300)
         place_cnt= random.randint(1, 70)
         video_cnt= random.randint(1, 400)
+        friends_continuous_exchange= random.randint(1, 100)
+        friends_rating_index= random.randint(1, 100)
 
-        returnListKakaoValue = [feeling_cnt, reply_cnt, place_cnt, video_cnt]
+        returnListKakaoValue = [feeling_cnt, reply_cnt, place_cnt, video_cnt, friends_continuous_exchange, friends_rating_index]
 
         return returnListKakaoValue
 
