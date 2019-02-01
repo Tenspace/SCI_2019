@@ -473,9 +473,7 @@ def kakao_story_crawler_start(user_list, start_date, end_date):
                 str(generateNumKakaoResult[5]),                                 # friends_rating_index
                 'NULL',                                                         # friends_correlation_score
                 'NULL'                                                          # contents_regular
-                # user_info['한줄소개']
-                # user_info['한줄음악']
-                # user_info['up']
+
             )
         except Exception as e_maria:
             logger.error(msg=e_maria)
