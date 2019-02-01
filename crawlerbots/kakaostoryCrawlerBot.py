@@ -438,8 +438,8 @@ def kakao_story_crawler_start(user_list, start_date, end_date):
         print(user_info)
 
         # expressionEngine.py
-        expressResultRate = exprs.ExpressionEngine.expressionFind(exprs.ExpressionEngine)
-        print("expressResult :", expressResultRate)
+        expressRateResult = exprs.ExpressionEngine.expressionFind(exprs.ExpressionEngine)
+        print("expressResult :", expressRateResult)
 
 
         # DB insert
@@ -455,8 +455,8 @@ def kakao_story_crawler_start(user_list, start_date, end_date):
                 str(user_info['생일']),                                           # birthday
                 str(user_info['직장']),                                           # company1
                 str(user_info['학교']),                                           # university1
-                'expression_negative',                                              # expression_negative
-                'expression_positive',                                              # expression_positive
+                str(expressRateResult[0]),                                              # expression_negative
+                str(expressRateResult[1]),                                              # expression_positive
                 str(user_info['소식받는수']),                                      # take_news
                 str(user_info['관심글']),                                         # post_interest
                 str(user_info['up한글']),                                         # post_up

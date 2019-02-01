@@ -40,31 +40,61 @@ class ExpressionEngine:
 
         for i in range(0, len(data)):
             if data[i]['word'] in newWordList:
-                result.append(data[i]['word_root'])
+                result.append(data[i]['word'])
                 result.append(data[i]['polarity'])
 
-                root_word = result[0]
+                key_word = result[0]
                 polar_word = result[1]
 
-        print(result)
+        #print(result)
 
         if polar_word == 'None':
             polar_word = '7'
 
-        print(result)
-        if root_word != "None":
-            print('root_word : ' + root_word)
+        print("result:", result)
+        if key_word != "None":
+            print('key_word : ' + key_word)
             print('polar_word : ' + polar_word)
             print("\n")
 
         else:
             # if polarity is None, give 7
             polar_word = '7'
-            print('root_word : ' + root_word)
+            print('root_word : ' + key_word)
             print('polar_word : ' + polar_word)
 
         # calculate expressionRateResult
         # 100개의 단어 중 polarity 7의 개수/ 15의 개수 / 30의 개수
+
+        print('7-count:', result.count('7'))
+
+        if result.count('7') >= 70:
+            negative_exp_rate = random.randint(41, 58)
+            positive_exp_rate = 100 - negative_exp_rate
+            return negative_exp_rate, positive_exp_rate
+        elif result.count('7') < 70 and result.count('15') >= 20:
+            if result.count('-15') >= 20:
+                negative_exp_rate = random.randint(60, 83)
+                positive_exp_rate = 100 - negative_exp_rate
+                return negative_exp_rate, positive_exp_rate
+            else:
+                positive_exp_rate = random.randint(60, 83)
+                negative_exp_rate = 100 - positive_exp_rate
+                return negative_exp_rate, positive_exp_rate
+        elif result.count('7') < 70 and result.count('15') < 20 and result.count('30') >= 8:
+            if result.count('-30') >= 8:
+                negative_exp_rate = random.randint(85, 100)
+                positive_exp_rate = 100 - negative_exp_rate
+                return negative_exp_rate, positive_exp_rate
+            else:
+                positive_exp_rate = random.randint(85, 100)
+                negative_exp_rate = 100 - positive_exp_rate
+                return negative_exp_rate, positive_exp_rate
+        else:
+            positive_exp_rate = 50
+            negative_exp_rate = 100 - positive_exp_rate
+            return negative_exp_rate, positive_exp_rate
+
 
 
 

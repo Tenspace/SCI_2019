@@ -9,6 +9,7 @@ from multiprocessing import Pool
 
 from crawlerBot_pack_SCI_2019.crawlerbots import db_mysql_connection_SCI
 from crawlerBot_pack_SCI_2019.crawlerbots import generateNumEngine as gen
+from crawlerBot_pack_SCI_2019.crawlerbots import expressionEngine as exprs
 global returnValue_kks_CSVData
 global returnValue_kks_singleData
 global hereWork
@@ -228,6 +229,9 @@ def info(href):
     '''
 
     generateNumInstaResult = gen.GenNumEngine.getCntInfo_instagram(gen.GenNumEngine)
+    # expressionEngine.py
+    expressRateResult = exprs.ExpressionEngine.expressionFind(exprs.ExpressionEngine)
+    print("expressResult :", expressRateResult)
 
     # DB insert
     try:
@@ -242,8 +246,8 @@ def info(href):
             str(generateNumInstaResult[3]),  # comment_cnt
             str(generateNumInstaResult[4]),  # share_cnt
             str(generateNumInstaResult[5]),  # place_add
-            'expression_negative',
-            'expression_positive',
+            str(expressRateResult[0]),        # expression_negative
+            str(expressRateResult[1]),         # expression_positive
             str(generateNumInstaResult[6]),  # post_cnt
             str(generateNumInstaResult[7]),  # photo_cnt
             str(generateNumInstaResult[8]),  # video_cnt

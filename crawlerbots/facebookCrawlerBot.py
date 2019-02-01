@@ -543,8 +543,8 @@ def facebook_crawler_start(drivers, user, start_date, end_date):
     '''
 
     # expressionEngine.py
-    expressResultRate = exprs.ExpressionEngine.expressionFind(exprs.ExpressionEngine)
-    print("expressResult :", expressResultRate)
+    expressRateResult = exprs.ExpressionEngine.expressionFind(exprs.ExpressionEngine)
+    print("expressResult :", expressRateResult)
 
     generateNumFaceResult = genN.GenNumEngine.getCntInfo_face(genN.GenNumEngine)
     print(result_dict)
@@ -571,8 +571,8 @@ def facebook_crawler_start(drivers, user, start_date, end_date):
                 str(result_dict['거주했던장소3']),             # address3
                 str(result_dict['Instagram']),              # 'contact1',
                 str(result_dict['웹사이트']),               # 'contact2',
-                'expression_negative',
-                'expression_positive',
+                str(expressRateResult[0]),                  # expression_negative
+                str(expressRateResult[1]),                      # expression_positive
                 str(result_dict['친구']),                 # 'friends_all',
                 str(generateNumFaceResult[0]),                  # 'friends_residence',
                 str(generateNumFaceResult[1]),               # 'friends_company',

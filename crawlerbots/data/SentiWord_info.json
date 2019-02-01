@@ -83200,11 +83200,6 @@
 	"polarity": "7"
 },
 {
-	"word": "accessible",
-	"word_root": "accessible",
-	"polarity": "7"
-},
-{
 	"word": "acclaim",
 	"word_root": "acclaim",
 	"polarity": "15"
@@ -102917,32 +102912,32 @@
 {
 	"word": "harassed",
 	"word_root": "harassed",
-	"polarity": "-15"
+	"polarity": "-30"
 },
 {
 	"word": "harasses",
 	"word_root": "harasses",
-	"polarity": "-15"
+	"polarity": "-30"
 },
 {
 	"word": "harassment",
 	"word_root": "harassment",
-	"polarity": "-15"
+	"polarity": "-30"
 },
 {
 	"word": "harboring",
 	"word_root": "harboring",
-	"polarity": "-15"
+	"polarity": "7"
 },
 {
 	"word": "harbors",
 	"word_root": "harbors",
-	"polarity": "-15"
+	"polarity": "7
 },
 {
 	"word": "hard",
 	"word_root": "hard",
-	"polarity": "-15"
+	"polarity": "15"
 },
 {
 	"word": "hard-hit",
@@ -102962,7 +102957,7 @@
 {
 	"word": "hardball",
 	"word_root": "hardball",
-	"polarity": "7"
+	"polarity": "-15"
 },
 {
 	"word": "harden",
@@ -102987,12 +102982,12 @@
 {
 	"word": "hardliner",
 	"word_root": "hardliner",
-	"polarity": "-15"
+	"polarity": "7"
 },
 {
 	"word": "hardliners",
 	"word_root": "hardliners",
-	"polarity": "-15"
+	"polarity": "7"
 },
 {
 	"word": "hardship",
@@ -103047,107 +103042,107 @@
 {
 	"word": "harsh",
 	"word_root": "harsh",
-	"polarity": "7"
+	"polarity": "-30"
 },
 {
 	"word": "harshly",
 	"word_root": "harshly",
-	"polarity": "7"
+	"polarity": "-30"
 },
 {
 	"word": "hasseling",
 	"word_root": "hasseling",
-	"polarity": "7"
+	"polarity": "-15"
 },
 {
 	"word": "hassle",
 	"word_root": "hassle",
-	"polarity": "7"
+	"polarity": "-30"
 },
 {
 	"word": "hassled",
 	"word_root": "hassled",
-	"polarity": "7"
+	"polarity": "-30"
 },
 {
 	"word": "hassles",
 	"word_root": "hassles",
-	"polarity": "7"
+	"polarity": "-30"
 },
 {
 	"word": "haste",
 	"word_root": "haste",
-	"polarity": "7"
+	"polarity": "-30"
 },
 {
 	"word": "hastily",
 	"word_root": "hastily",
-	"polarity": "7"
+	"polarity": "-30"
 },
 {
 	"word": "hasty",
 	"word_root": "hasty",
-	"polarity": "7"
+	"polarity": "-15"
 },
 {
 	"word": "hate",
 	"word_root": "hate",
-	"polarity": "7"
+	"polarity": "-30"
 },
 {
 	"word": "hated",
 	"word_root": "hated",
-	"polarity": "7"
+	"polarity": "-30"
 },
 {
 	"word": "hateful",
 	"word_root": "hateful",
-	"polarity": "7"
+	"polarity": "-30"
 },
 {
 	"word": "hatefully",
 	"word_root": "hatefully",
-	"polarity": "7"
+	"polarity": "-30"
 },
 {
 	"word": "hatefulness",
 	"word_root": "hatefulness",
-	"polarity": "7"
+	"polarity": "-30"
 },
 {
 	"word": "hater",
 	"word_root": "hater",
-	"polarity": "7"
+	"polarity": "-30"
 },
 {
 	"word": "haters",
 	"word_root": "haters",
-	"polarity": "7"
+	"polarity": "-30"
 },
 {
 	"word": "hates",
 	"word_root": "hates",
-	"polarity": "7"
+	"polarity": "-30"
 },
 {
 	"word": "hating",
 	"word_root": "hating",
-	"polarity": "7"
+	"polarity": "-30"
 },
 {
 	"word": "hatred",
 	"word_root": "hatred",
-	"polarity": "7"
+	"polarity": "-30"
 },
 {
 	"word": "haughtily",
 	"word_root": "haughtily",
-	"polarity": "7"
+	"polarity": "-30"
 },
 {
 	"word": "haughty",
 	"word_root": "haughty",
-	"polarity": "7"
+	"polarity": "-30"
 },
 {
 	"word": "haunt",
@@ -103162,7 +103157,7 @@
 {
 	"word": "havoc",
 	"word_root": "havoc",
-	"polarity": "7"
+	"polarity": "15"
 },
 {
 	"word": "hawkish",
@@ -103177,12 +103172,12 @@
 {
 	"word": "hazard",
 	"word_root": "hazard",
-	"polarity": "7"
+	"polarity": "-30"
 },
 {
 	"word": "hazardous",
 	"word_root": "hazardous",
-	"polarity": "7"
+	"polarity": "-30"
 },
 {
 	"word": "haze",
@@ -103192,42 +103187,42 @@
 {
 	"word": "hazy",
 	"word_root": "hazy",
-	"polarity": "7"
+	"polarity": "-15"
 },
 {
 	"word": "head-aches",
 	"word_root": "head-aches",
-	"polarity": "7"
+	"polarity": "-30"
 },
 {
 	"word": "headache",
 	"word_root": "headache",
-	"polarity": "7"
+	"polarity": "-30"
 },
 {
 	"word": "headaches",
 	"word_root": "headaches",
-	"polarity": "7"
+	"polarity": "-30"
 },
 {
 	"word": "heartbreaker",
 	"word_root": "heartbreaker",
-	"polarity": "7"
+	"polarity": "-30"
 },
 {
 	"word": "heartbreaking",
 	"word_root": "heartbreaking",
-	"polarity": "7"
+	"polarity": "-30"
 },
 {
 	"word": "heartbreakingly",
 	"word_root": "heartbreakingly",
-	"polarity": "7"
+	"polarity": "-30"
 },
 {
 	"word": "heartless",
 	"word_root": "heartless",
-	"polarity": "7"
+	"polarity": "-30"
 },
 {
 	"word": "heathen",
@@ -103237,57 +103232,57 @@
 {
 	"word": "heavy-handed",
 	"word_root": "heavy-handed",
-	"polarity": "7"
+	"polarity": "-15"
 },
 {
 	"word": "heavyhearted",
 	"word_root": "heavyhearted",
-	"polarity": "7"
+	"polarity": "-15"
 },
 {
 	"word": "heck",
 	"word_root": "heck",
-	"polarity": "7"
+	"polarity": "-30"
 },
 {
 	"word": "heckle",
 	"word_root": "heckle",
-	"polarity": "7"
+	"polarity": "-30"
 },
 {
 	"word": "heckled",
 	"word_root": "heckled",
-	"polarity": "7"
+	"polarity": "-30"
 },
 {
 	"word": "heckles",
 	"word_root": "heckles",
-	"polarity": "7"
+	"polarity": "-30"
 },
 {
 	"word": "hectic",
 	"word_root": "hectic",
-	"polarity": "7"
+	"polarity": "-15"
 },
 {
 	"word": "hedge",
 	"word_root": "hedge",
-	"polarity": "7"
+	"polarity": "15"
 },
 {
 	"word": "hedonistic",
 	"word_root": "hedonistic",
-	"polarity": "7"
+	"polarity": "-15"
 },
 {
 	"word": "heedless",
 	"word_root": "heedless",
-	"polarity": "7"
+	"polarity": "-15"
 },
 {
 	"word": "hefty",
 	"word_root": "hefty",
-	"polarity": "7"
+	"polarity": "-15"
 },
 {
 	"word": "hegemonism",
@@ -103307,42 +103302,42 @@
 {
 	"word": "heinous",
 	"word_root": "heinous",
-	"polarity": "7"
+	"polarity": "-30"
 },
 {
 	"word": "hell",
 	"word_root": "hell",
-	"polarity": "7"
+	"polarity": "-30"
 },
 {
 	"word": "hell-bent",
 	"word_root": "hell-bent",
-	"polarity": "7"
+	"polarity": "-30"
 },
 {
 	"word": "hellion",
 	"word_root": "hellion",
-	"polarity": "7"
+	"polarity": "-30"
 },
 {
 	"word": "hells",
 	"word_root": "hells",
-	"polarity": "7"
+	"polarity": "-30"
 },
 {
 	"word": "helpless",
 	"word_root": "helpless",
-	"polarity": "7"
+	"polarity": "-30"
 },
 {
 	"word": "helplessly",
 	"word_root": "helplessly",
-	"polarity": "7"
+	"polarity": "-30"
 },
 {
 	"word": "helplessness",
 	"word_root": "helplessness",
-	"polarity": "7"
+	"polarity": "-30"
 },
 {
 	"word": "heresy",
@@ -103362,47 +103357,42 @@
 {
 	"word": "hesitant",
 	"word_root": "hesitant",
-	"polarity": "7"
-},
-{
-	"word": "hestitant",
-	"word_root": "hestitant",
-	"polarity": "7"
+	"polarity": "-15"
 },
 {
 	"word": "hideous",
 	"word_root": "hideous",
-	"polarity": "7"
+	"polarity": "-30"
 },
 {
 	"word": "hideously",
 	"word_root": "hideously",
-	"polarity": "7"
+	"polarity": "-30"
 },
 {
 	"word": "hideousness",
 	"word_root": "hideousness",
-	"polarity": "7"
+	"polarity": "-30"
 },
 {
 	"word": "high-priced",
 	"word_root": "high-priced",
-	"polarity": "7"
+	"polarity": "-15"
 },
 {
 	"word": "hiliarious",
 	"word_root": "hiliarious",
-	"polarity": "7"
+	"polarity": "-30"
 },
 {
 	"word": "hinder",
 	"word_root": "hinder",
-	"polarity": "7"
+	"polarity": "-30"
 },
 {
 	"word": "hindrance",
 	"word_root": "hindrance",
-	"polarity": "7"
+	"polarity": "-30"
 },
 {
 	"word": "hiss",
