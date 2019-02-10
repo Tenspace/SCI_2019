@@ -13,6 +13,8 @@ from selenium.webdriver.support.ui import WebDriverWait
 from crawlerBot_pack_SCI_2019.crawlerbots import db_mysql_connection_SCI
 from crawlerBot_pack_SCI_2019.crawlerbots import generateNumEngine as genN
 from crawlerBot_pack_SCI_2019.crawlerbots import expressionEngine as exprs
+from crawlerBot_pack_SCI_2019.crawlerbots.registeredRecorduser import RegRecorduser
+from crawlerBot_pack_SCI_2019.crawlerbots.selectDatedata import SelectDateData
 
 hereWork = str('Facebook')
 now = datetime.now()
@@ -63,8 +65,14 @@ def start(user_list, start_date, end_date):
     drivers.get(url)
     WebDriverWait(drivers, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, "div.other-links")))
 
-    drivers.find_element_by_name('email').send_keys('riei1005@naver.com')
-    drivers.find_element_by_name('pass').send_keys('4109121z#')
+    #1
+    # drivers.find_element_by_name('email').send_keys('riei1005@naver.com')
+    # drivers.find_element_by_name('pass').send_keys('4109121z#!')
+    #
+    #2
+    drivers.find_element_by_name('email').send_keys('01027746254')
+    drivers.find_element_by_name('pass').send_keys('Gkstkddbs4$')
+
     drivers.find_element_by_name('login').click()
     WebDriverWait(drivers, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, "div#rootcontainer")))
 
@@ -88,8 +96,13 @@ def start(user_list, start_date, end_date):
             try:
                 drivers.get(url)
                 WebDriverWait(drivers, 5).until(EC.presence_of_element_located((By.CSS_SELECTOR, "div.other-links")))
-                drivers.find_element_by_name('email').send_keys('riei1005@naver.com')
-                drivers.find_element_by_name('pass').send_keys('4109121z#')
+                # 1
+                # drivers.find_element_by_name('email').send_keys('riei1005@naver.com')
+                # drivers.find_element_by_name('pass').send_keys('4109121z#!')
+                #
+                # 2
+                drivers.find_element_by_name('email').send_keys('01027746254')
+                drivers.find_element_by_name('pass').send_keys('Gkstkddbs4$')
                 drivers.find_element_by_name('login').click()
                 WebDriverWait(drivers, 5).until(EC.presence_of_element_located((By.CSS_SELECTOR, "div#rootcontainer")))
                 driver, data = facebook_crawler_start(drivers, user, start_date, end_date)
@@ -509,38 +522,14 @@ def facebook_crawler_start(drivers, user, start_date, end_date):
     result_dict['댓글'] = reply_cnt
     result_dict['공유'] = share_cnt
     result_dict['장소추가'] = place_add_cnt
-    print('########################')
+    #print('########################')
     print('포스트 :', result_dict['포스트'])
     print('좋아요 :', result_dict['좋아요'])
     print('댓글 :', result_dict['댓글'])
     print('공유 :', result_dict['공유'])
     print('장소추가 :', result_dict['장소추가'])
-    print('########################')
+    #print('########################')
 
-    '''
-    returnListFaceValue = [
-    0   friends_residence, 
-    1   friends_company, 
-    2   friends_univ, 
-    3   friends_highschool, 
-    4   friends_native, 
-    5   like_all_cnt,
-    6   like_movie_cnt, 
-    7   like_tv_cnt, 
-    8   like_music_cnt, 
-    9   like_book_cnt, 
-    10  like_sports_cnt, 
-    11  like_athlete_cnt, 
-    12  like_restaurant_cnt, 
-    13  like_appgame_cnt,
-    14  check_in, 
-    15  event, 
-    16  review, 
-    17  album_category_cnt, 
-    18  video_tag_oneself_cnt, 
-    19  operation_year_period
-    ]
-    '''
 
     # expressionEngine.py
     expressRateResult = exprs.ExpressionEngine.expressionFind(exprs.ExpressionEngine)
@@ -684,23 +673,12 @@ def auto_scroll2(driver):
 
     return auto_scroll_data_soup_html
 
-
 def main():
-    user_list = ['young1028', 'jjjjyhan', 'sesrlagus',  'uiop1031',
-                 'Jungoodsexy', '940107a', 'elenaH12', 'simgyueun', 'vlfdn77',
-                 '100005615048302', '100003275046658', '100005187035294', '100009369558961', '100028227831758',
-                 '100004987146174', '100004836430256', '100003404283641', '100005889039551', '100004887280554',
-                 '100005006550903', '100016890948602', '100007281734703', '100008113930734', '100024163625273',
-                 '100005258207204', '100027854512655', '100004981025534', '100004887009018', '100004852687530',
-                 '100003463552136', '100012790030832', '100002567718479', '100005061674215', '100005841635812',
-                 '100014696075774', '100006691393038', '100021702141532', '100006928356714', '100009123818856',
-                 '100004219088975', '100011062878138', '100004087143249', '100007071137220', '100007857672613',
-                 '100005106942485', '100004770395826', '100007059873817', '100005878770807', '100004152603748',
-                 '100005217543832', '100005121637375', '100005631394717', '100010048608214', '100003296069301',
-                 '100004826199908', '100005178193406', 'kpokem',]
-    start_date = '2017-01-01'
-    end_date = '2018-01-01'
-    start(user_list, start_date, end_date)
-
-
+    regUser = RegRecorduser()
+    user_list = regUser.call_userlist_fb()
+    se = SelectDateData().selctDate()
+    start_date = se[0]
+    end_date = se[1]
+    for user in user_list:
+        start(user_list, start_date, end_date)
 main()

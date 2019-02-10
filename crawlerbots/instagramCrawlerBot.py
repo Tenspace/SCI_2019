@@ -1,34 +1,43 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+from crawlerBot_pack_SCI_2019.crawlerbots import db_mysql_connection_SCI
+from crawlerBot_pack_SCI_2019.crawlerbots import generateNumEngine as gen
+from crawlerBot_pack_SCI_2019.crawlerbots import expressionEngine as exprs
+from crawlerBot_pack_SCI_2019.crawlerbots.registeredRecorduser import RegRecorduser
 
 import logging.handlers
 import time
 from bs4 import BeautifulSoup
 from selenium import webdriver
-from multiprocessing import Pool
+from datetime import datetime
+import requests
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
 
-from crawlerBot_pack_SCI_2019.crawlerbots import db_mysql_connection_SCI
-from crawlerBot_pack_SCI_2019.crawlerbots import generateNumEngine as gen
-from crawlerBot_pack_SCI_2019.crawlerbots import expressionEngine as exprs
 global returnValue_kks_CSVData
 global returnValue_kks_singleData
 global hereWork
 
 hereWork = 'Instagram'
-
-currentTime = str(time.localtime().tm_year) + '_' + str(time.localtime().tm_mon) + '_' + str(
-    time.localtime().tm_mday) + '_' + str(time.localtime().tm_hour)
+now = datetime.now()
+currentTime = '%s_%s_%s' % (now.year, now.month, now.day)
 
 # logger 인스턴스를 생성 및 로그 레벨 설정
-logger = logging.getLogger(hereWork+'_logging')
+logger = logging.getLogger(hereWork + '_logging')
 logger.setLevel(logging.DEBUG)
 
 # formatter 생성
 formatter = logging.Formatter('[%(levelname)s|%(filename)s:%(lineno)s] %(asctime)s > %(message)s')
 
 # fileHandler 와 StreamHandler 를 생성
-file_max_bytes = 10*1024*1024   # log file size : 10MB
-fileHandler = logging.handlers.RotatingFileHandler('C:/python_project/log/' + hereWork + '_crawlerbot_logging_' + currentTime, maxBytes=file_max_bytes, backupCount=10)
+file_max_bytes = 10 * 1024 * 1024  # log file size : 10MB
+
+fileHandler = logging.handlers.RotatingFileHandler(
+    r"C:\\dev_tenspace\\2019_python_project_syhan\\201901_python36\\crawlerBot_pack_SCI_2019\\crawlerbots\\log\\" + hereWork + "_log_"
+    + currentTime, maxBytes=file_max_bytes, backupCount=10)
+
 streamHandler = logging.StreamHandler()
 
 # handler 에 formatter 세팅
@@ -37,18 +46,49 @@ streamHandler.setFormatter(formatter)
 
 # Handler 를 logging 에 추가
 logger.addHandler(fileHandler)
+logger.addHandler(streamHandler)
+
+# logging
+logging.debug(hereWork + '_crawler_bot_debugging on' + currentTime)
+logging.info('info')
+logging.warning('warning')
+logging.error('error')
+logging.critical('critical')
 
 
 def feed(user):
     print('feed 시작 ', '-'*50)
+    print('user:', user)
     # 크롤링할 주소
     url = 'https://www.instagram.com/'+user+'/'
 
-    options = webdriver.ChromeOptions()
-    options.add_argument('window-size=1920x1080')
+    # options = webdriver.ChromeOptions()
+    # options.add_argument('window-size=1920x1080')
+    #
+    # driver = webdriver.Chrome(chrome_options=options)
+    # driver.get(url)
+    # driver.implicitly_wait(4)
+    #
 
-    driver = webdriver.Chrome(chrome_options=options)
+    headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:20.0) Gecko/20100101 Firefox/20.0'}
+    response = requests.get(url, headers=headers)
+    print(response)
+
+    print('Auto login start.')
+
+    chrome_options = Options()
+    chrome_options.add_argument("--window-size=1920x1080")
+
+    # prefs = {}
+    # prefs['profile.default_content_setting_values.notifications'] = 2
+    # chrome_options.add_experimental_option('prefs', prefs)
+
+    #driver = webdriver.Chrome(chrome_options=chrome_options)
+    path = r"C:\dev_tenspace\2019_python_project_syhan\201901_python36\crawlerBot_pack_SCI_2019\chromedriver.exe"
+
+    driver = webdriver.Chrome(options=chrome_options, executable_path=path)
     driver.get(url)
+    #WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, "div.info_user")))
     driver.implicitly_wait(4)
 
     print("Searching " + url)
@@ -210,28 +250,16 @@ def info(href):
         print()
     driver.close()
 
-    '''
-    following_cnt
-    follower_cnt
-    like_cnt
-    comment_cnt
-    share_cnt
-    place_add
-    post_cnt
-    photo_cnt
-    video_cnt
-    friends_continuous_exchange
-    friends_rating_index
-    contents_regular
-    
-    expression_negative
-    expression_positive
-    '''
 
     generateNumInstaResult = gen.GenNumEngine.getCntInfo_instagram(gen.GenNumEngine)
     # expressionEngine.py
     expressRateResult = exprs.ExpressionEngine.expressionFind(exprs.ExpressionEngine)
     print("expressResult :", expressRateResult)
+
+    regUserid = RegRecorduser()
+    returnedVal = regUserid.load_words()
+    #print(returnedVal)
+
 
     # DB insert
     try:
@@ -239,7 +267,7 @@ def info(href):
         db = db_mysql_connection_SCI.DatabaseConnection()
         db.kakao_insert(
             'instagram',  # platform
-            user,  # page_id
+            returnedVal,  # page_id
             str(generateNumInstaResult[0]),  # following_cnt
             str(generateNumInstaResult[1]),  # follower_cnt
             str(generateNumInstaResult[2]),  # like_cnt
@@ -259,18 +287,21 @@ def info(href):
         logger.error(msg=e_maria)
 
 
-if __name__ == "__main__":
+def main():
     start_time_all = time.time()
-    user_list = ['jelly_jilli', '3.48kg', '4x2a', '0.94k', 'helenwoooo', 'shuni_kaeun', 'haneul__haneul', 'yoou.ch',
-                 'soy.oon', 'oao.v']
+    regUser = RegRecorduser()
+    user_list = regUser.call_userlist_kks()
     for user in user_list:
         # 멀티 프로세싱
-        pool = Pool(processes=8)
-        pool.map(info, feed(user))
+        # pool = Pool(processes=8)
+        # pool.map(info, feed(user))
+        feed(user)
+
 
     end_time = time.time() - start_time_all
-    print()
     print('데이터 기반 크롤링 총 구동 시간 :', end_time)
+main()
+
 
 
 

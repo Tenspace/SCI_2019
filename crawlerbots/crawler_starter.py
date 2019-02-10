@@ -1,5 +1,7 @@
-from crawlerBot_pack_SCI_2019.crawlerbots.kakaostoryCrawlerBot import kakao_story_crawler_start
-from crawlerBot_pack_SCI_2019.crawlerbots.facebookCrawlerBot import facebook_crawler_start
+#from crawlerBot_pack_SCI_2019.crawlerbots.facebookCrawlerBot import main as fbMain
+#from crawlerBot_pack_SCI_2019.crawlerbots.kakaostoryCrawlerBot import main as kksMain
+from crawlerBot_pack_SCI_2019.crawlerbots.instagramCrawlerBot import main as instaMain
 
-facebook_crawler_start()
-kakao_story_crawler_start()
+#fbMain()
+#kksMain()
+instaMain()

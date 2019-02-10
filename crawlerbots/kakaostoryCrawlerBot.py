@@ -5,6 +5,8 @@ from datetime import datetime
 from crawlerBot_pack_SCI_2019.crawlerbots import db_mysql_connection_SCI
 from crawlerBot_pack_SCI_2019.crawlerbots import expressionEngine as exprs
 from crawlerBot_pack_SCI_2019.crawlerbots import generateNumEngine as genN
+from crawlerBot_pack_SCI_2019.crawlerbots.registeredRecorduser import RegRecorduser
+from crawlerBot_pack_SCI_2019.crawlerbots.selectDatedata import SelectDateData
 
 import requests
 from bs4 import BeautifulSoup
@@ -87,6 +89,7 @@ def kakao_story_crawler_start(user_list, start_date, end_date):
     user_info = {}
 
     for user in user_list:
+        print("userid:", user)
         driver.get('https://story.kakao.com/' + user + '/profile')
         WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, "div.profile_collection ")))
         print('start :', driver.current_url)
@@ -554,10 +557,12 @@ def auto_scroll(driver):
 
 
 def main():
-    user_list = ['maplekim', 'qubixx', '_0DMwY', 'ppang_madam', 'chezmoi_2013', 'editorh', 'sy_217', '_9Y2Ok3',
-                 'pepper_salt', 'wlsgmldml', 'dippydro', 'glila', 'cookieontheroad', 'suheeryu', 'sobook', 'akdmf72',
-                 'liliant', 'silverway', 'chezmoi_2013', 'lks1719', 'ateliersujin', 'jjaoyami', 'songah_jeju']
-    start_date = '2017-01-01'
-    end_date = '2018-01-01'
-    kakao_story_crawler_start(user_list, start_date, end_date)
+    regUser = RegRecorduser()
+    user_list = regUser.call_userlist_kks()
+    se = SelectDateData().selctDate()
+    # start_date = '2017-01-01'
+    start_date = se[0]
+    end_date = se[1]
+    for user in user_list:
+        kakao_story_crawler_start(user, start_date, end_date)
 main()
