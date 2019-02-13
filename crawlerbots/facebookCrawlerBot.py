@@ -10,11 +10,11 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
-from crawlerBot_pack_SCI_2019.crawlerbots import db_mysql_connection_SCI
-from crawlerBot_pack_SCI_2019.crawlerbots import generateNumEngine as genN
-from crawlerBot_pack_SCI_2019.crawlerbots import expressionEngine as exprs
-from crawlerBot_pack_SCI_2019.crawlerbots.registeredRecorduser import RegRecorduser
-from crawlerBot_pack_SCI_2019.crawlerbots.selectDatedata import SelectDateData
+from SCI_2019.crawlerbots import db_mysql_connection_SCI
+from SCI_2019.crawlerbots import generateNumEngine as genN
+from SCI_2019.crawlerbots import expressionEngine as exprs
+from SCI_2019.crawlerbots.registeredRecorduser import RegRecorduser
+from SCI_2019.crawlerbots.selectDatedata import SelectDateData
 
 hereWork = str('Facebook')
 now = datetime.now()

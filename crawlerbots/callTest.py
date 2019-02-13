@@ -1,6 +1,6 @@
 # import crawlerBot_pack_SCI_2019.crawlerbots.expressionEngine as exprs
 # import crawlerBot_pack_SCI_2019.crawlerbots.generateNumEngine as gen
-from crawlerBot_pack_SCI_2019.crawlerbots import registeredRecorduser as userlist
+from SCI_2019.crawlerbots import registeredRecorduser as userlist
 # expressionEngine.py
 # expressRateResult = exprs.ExpressionEngine.expressionFind(exprs.ExpressionEngine)
 # print("expressResult :", expressRateResult)

@@ -5,16 +5,18 @@ db = pymysql.connect(
     port=3306,
     user='root',
     password='1234',
-    db='face',
+    db='crawling',
     charset='utf8mb4')
 print(db)
 cursor = db.cursor()
 cursor.execute("SELECT VERSION()")
 version = cursor.fetchall()
 print(version)
+
 sql = '''CREATE TABLE `crawler_score` (
         `no_index` INT(11) NOT NULL AUTO_INCREMENT,
         `insertedTime` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        `origin_ph` VARCHAR(255) NULL DEFAULT NULL,
         `platform` VARCHAR(255) NULL DEFAULT NULL,
         `page_id` VARCHAR(255) NULL DEFAULT NULL,
         `username` VARCHAR(255) NULL DEFAULT NULL,
@@ -79,21 +81,23 @@ sql = '''CREATE TABLE `crawler_score` (
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8
     ;'''
 
-# sql2 = '''CREATE TABLE `post` (
-#         `no_index` INT(11) NOT NULL AUTO_INCREMENT,
-#         `insertedTime` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-#         `platform` VARCHAR(255) NULL DEFAULT NULL,
-#         `page_id` VARCHAR(255) NULL DEFAULT NULL,
-#         `post_text` VARCHAR(255) NULL DEFAULT NULL,
-#         `post_like` VARCHAR(255) NULL DEFAULT NULL,
-#         `post_reply` VARCHAR(255) NULL DEFAULT NULL,
-#         `post_share` VARCHAR(255) NULL DEFAULT NULL,
-#         `post_date` DATE NULL DEFAULT NULL,
-#         PRIMARY KEY (`no_index`)
-#     ) ENGINE=InnoDB DEFAULT CHARSET=utf8
-#     ;
+sql2 = '''CREATE TABLE `post` (
+        `no_index` INT(11) NOT NULL AUTO_INCREMENT,
+        `insertedTime` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        `origin_ph` VARCHAR(255) NULL DEFAULT NULL,
+        `platform` VARCHAR(255) NULL DEFAULT NULL,
+        `page_id` VARCHAR(255) NULL DEFAULT NULL,
+        `post_text` VARCHAR(255) NULL DEFAULT NULL,
+        `post_like` VARCHAR(255) NULL DEFAULT NULL,
+        `post_reply` VARCHAR(255) NULL DEFAULT NULL,
+        `post_share` VARCHAR(255) NULL DEFAULT NULL,
+        `post_date` DATE NULL DEFAULT NULL,
+        PRIMARY KEY (`no_index`)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8
+    ;'''
 
 cursor.execute(sql)
+cursor.execute(sql2)
 
 
 
