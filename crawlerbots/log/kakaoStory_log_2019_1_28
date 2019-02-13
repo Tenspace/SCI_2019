@@ -1,6 +1,0 @@
-[ERROR|kakaostoryCrawlerBot.py:164] 2019-01-28 17:10:30,888 > list index out of range
-Traceback (most recent call last):
-  File "C:\dev_tenspace\2019_python_project_syhan\201901_python36\crawlerBot_pack_SCI_2019\crawlerbots\kakaostoryCrawlerBot.py", line 141, in kakao_story_crawler_start
-    'div.story_widgets > div[data-part-name=myInfo] > div > h3')[0].text
-IndexError: list index out of range
-[ERROR|kakaostoryCrawlerBot.py:463] 2019-01-28 17:11:18,301 > 'int' object has no attribute 'replace'
