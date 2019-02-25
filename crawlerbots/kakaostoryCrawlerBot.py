@@ -2,9 +2,8 @@
 import logging.handlers
 import time
 from datetime import datetime
-
-import requests
-from SCI_2019.crawlerbots import db_mysql_connection_SCI
+from crawlerbots import expressionEngine as exprs
+from crawlerbots import db_mysql_connection_SCI
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -47,12 +46,9 @@ logging.error('error')
 logging.critical('critical')
 
 
-def kakao_story_crawler_start(user_list, start_date, end_date):
+def kakao_story_crawler_start(user_list, start_date, end_date, origin_ph, origin_name):
     start_time_all = time.time()
     login_url = 'https://accounts.kakao.com/login/kakaostory'
-    headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:20.0) Gecko/20100101 Firefox/20.0'}
-    response = requests.get(login_url, headers=headers)
-    print(response)
 
     print('Auto login start.')
 
@@ -80,395 +76,367 @@ def kakao_story_crawler_start(user_list, start_date, end_date):
 
     user_info = {}
 
-    for user in user_list:
-        r = open('kakaoStory_user.txt', mode='rt', encoding='utf-8')
-        user_txt = r.read()
-        r.close()
-        if '_' + user + '_' not in user_txt:
-            try:
-                driver.get('https://story.kakao.com/' + user + '/profile')
-                WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.CSS_SELECTOR, "div.profile_collection ")))
-                print('start :', driver.current_url)
-                user_info['카카오스토리페이지ID'] = user
-                user_info['이름'] = ''
-                user_info['스토리'] = 0
-                user_info['생일'] = ''
-                user_info['학교'] = ''
-                user_info['한줄소개'] = ''
-                user_info['한줄음악'] = ''
-                user_info['거주지'] = ''
-                user_info['직장'] = ''
-                user_info['성별'] = ''
-                user_info['게시글'] = 0
-                user_info['좋아요'] = 0
-                user_info['댓글'] = 0
-                user_info['공유'] = 0
-                user_info['up'] = 0
-                user_info['사진'] = 0
-                user_info['동영상'] = 0
-                user_info['장소'] = 0
-                user_info['관심글'] = 0
-                user_info['up한글'] = 0
-                user_info['소식받는수'] = 0
-                user_info['kk_TSCORE'] = 0
-                user_info['kk_CSCORE'] = 0
-                user_info['kk_MSCORE'] = 0
-                try:
-                    # 페이지가 로딩된 다음 beautifulSoup을 이용하여 HTML 문서 값 가져옴.
-                    html_soup = BeautifulSoup(driver.page_source, 'html.parser')
-                    print('[ 기본 정보 ]')
-                    dl_list = html_soup.select('#myStoryContentWrap > div:nth-of-type(2) > div > '
-                                               'div.profile_collection > div > div[data-part-name=profileView] > dl')
-                    # 기본 정보(이름, 생일, 성별, 뮤직, 직장정보, 거주지정보)
-                    # 아래의 영역 값들은 공개할 수도, 안할 수도 있는 것들임. 각각의 항목을 반드시 try except 로 묶어
-                    # Exception 에 의한 process 중단을 피해야 함.
-                    for i in range(len(dl_list)):
-                        try:
-                            user_info_span_title = html_soup.select(
-                                '#myStoryContentWrap > div:nth-of-type(2) > div > div.profile_collection > div > div > '
-                                'dl:nth-of-type(' + str(i + 1) + ') > dt > span')[0].text.replace(" ", "")
+    for idx, user in enumerate(user_list):
+        if idx > 11301 and idx < 14301:
+            r = open('kakaoStory_user.txt', mode='rt', encoding='utf-8')
+            user_txt = r.read()
+            r.close()
+            # 1. 90라인  : search_log 테이블에 카카오스토리 주소가 있으면 크롤링함
+            # 2. 92라인  : txt 파일에 똑같은 주소가 없으면 크롤링함 (크롤링 후 kakaoStory_user.txt 에 주소를 기입함)
+            # 3. 124라인 : search_log 테이블에 real_name 필드이름과 카카오스토리 이름이 같으면 크롤링함 똑같지 않으면 mismatch 테이블에 insert
+            if user is not None and user != '':
+                user = user.replace('https://story.kakao.com/', '')
+                if '_' + user + '_' not in user_txt:
+                    try:
+                        start_time_all = time.time(                                            )
+                        driver.get('https://story.kakao.com/' + user + '/profile')
+                        WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.CSS_SELECTOR, "div.profile_collection ")))
+                        print('start :', driver.current_url)
+                        user_info['카카오스토리페이지ID'] = user
+                        user_info['이름'] = ''
+                        user_info['스토리'] = 0
+                        user_info['생일'] = ''
+                        user_info['학교'] = ''
+                        user_info['거주지'] = ''
+                        user_info['직장'] = ''
+                        user_info['성별'] = ''
+                        user_info['게시글'] = 0
+                        user_info['좋아요'] = 0
+                        user_info['댓글'] = 0
+                        user_info['공유'] = 0
+                        user_info['up'] = 0
+                        user_info['사진'] = 0
+                        user_info['동영상'] = 0
+                        user_info['장소'] = 0
+                        user_info['관심글'] = 0
+                        user_info['up한글'] = 0
+                        user_info['소식받는수'] = 0
+                        kakao_name = driver.find_element_by_css_selector('._profileName').text
+                        print(origin_name[idx], ':', kakao_name)
+                        if origin_name[idx] == kakao_name:
+                            try:
+                                # 페이지가 로딩된 다음 beautifulSoup을 이용하여 HTML 문서 값 가져옴.
+                                html_soup = BeautifulSoup(driver.page_source, 'html.parser')
+                                print('[ 기본 정보 ]')
+                                dl_list = html_soup.select('#myStoryContentWrap > div:nth-of-type(2) > div > '
+                                                           'div.profile_collection > div > div[data-part-name=profileView] > dl')
+                                # 기본 정보(이름, 생일, 성별, 뮤직, 직장정보, 거주지정보)
+                                # 아래의 영역 값들은 공개할 수도, 안할 수도 있는 것들임. 각각의 항목을 반드시 try except 로 묶어
+                                # Exception 에 의한 process 중단을 피해야 함.
+                                for i in range(len(dl_list)):
+                                    try:
+                                        user_info_span_title = html_soup.select(
+                                            '#myStoryContentWrap > div:nth-of-type(2) > div > div.profile_collection > div > div > '
+                                            'dl:nth-of-type(' + str(i + 1) + ') > dt > span')[0].text.replace(" ", "")
 
-                            user_info_dl_value = html_soup.select(
-                                '#myStoryContentWrap > div:nth-of-type(2) > div > div.profile_collection > div > '
-                                'div[data-part-name=profileView] > dl:nth-of-type(' + str(i + 1) + ') > dd > div '
-                            )[0].text.replace('\xa0', '').replace(' ', '')
+                                        user_info_dl_value = html_soup.select(
+                                            '#myStoryContentWrap > div:nth-of-type(2) > div > div.profile_collection > div > '
+                                            'div[data-part-name=profileView] > dl:nth-of-type(' + str(i + 1) + ') > dd > div '
+                                        )[0].text.replace('\xa0', '').replace(' ', '')
 
-                            user_info[user_info_span_title] = user_info_dl_value
-                            print(user_info_span_title, ' : ', user_info[user_info_span_title])
+                                        user_info[user_info_span_title] = user_info_dl_value
+                                        print(user_info_span_title, ' : ', user_info[user_info_span_title])
 
-                        except Exception as e:
-                            print('사용자가 정보를 더이상 공개하지 않았습니다. ->', e)
-                    info = html_soup.select('#myStoryContentWrap > div[data-module=myStoryWidget] > '
-                                            'div.story_widgets > div[data-part-name=myInfo] > div > h3')[0].text
-                    # 정보(스토리 개수, 출신 학교)
-                    if info is not None:
-                        info_list = html_soup.select(
-                            '#myStoryContentWrap > div[data-module=myStoryWidget] > div.story_widgets > '
-                            'div[data-part-name=myInfo] > div > dl.list_info > dt')
-                        print('[ 정보 ]')
-                        for i in range(len(info_list)):
+                                    except Exception as e:
+                                        print('사용자가 정보를 더이상 공개하지 않았습니다. ->', e)
+                                info = html_soup.select('#myStoryContentWrap > div[data-module=myStoryWidget] > '
+                                                        'div.story_widgets > div[data-part-name=myInfo] > div > h3')[0].text
+                                # 정보(스토리 개수, 출신 학교)
+                                if info is not None:
+                                    info_list = html_soup.select(
+                                        '#myStoryContentWrap > div[data-module=myStoryWidget] > div.story_widgets > '
+                                        'div[data-part-name=myInfo] > div > dl.list_info > dt')
+                                    print('[ 정보 ]')
+                                    for i in range(len(info_list)):
 
-                            user_compct_info_title = html_soup.select(
-                                '#myStoryContentWrap > div[data-module=myStoryWidget] > div.story_widgets > '
-                                'div[data-part-name=myInfo] > div > dl.list_info > dt:nth-of-type('
-                                + str(i + 1) + ') > span:nth-of-type(1)')[0].text.replace('\xa0', '').replace(' ', '')
+                                        user_compct_info_title = html_soup.select(
+                                            '#myStoryContentWrap > div[data-module=myStoryWidget] > div.story_widgets > '
+                                            'div[data-part-name=myInfo] > div > dl.list_info > dt:nth-of-type('
+                                            + str(i + 1) + ') > span:nth-of-type(1)')[0].text.replace('\xa0', '').replace(' ', '')
 
-                            user_compct_info_value = html_soup.select(
-                                '#myStoryContentWrap > div[data-module=myStoryWidget] > div.story_widgets > '
-                                'div[data-part-name=myInfo] > div > dl.list_info > dd:nth-of-type('
-                                + str(i + 1) + ')')[0].text.replace('\xa0', '').replace(' ', '')
+                                        user_compct_info_value = html_soup.select(
+                                            '#myStoryContentWrap > div[data-module=myStoryWidget] > div.story_widgets > '
+                                            'div[data-part-name=myInfo] > div > dl.list_info > dd:nth-of-type('
+                                            + str(i + 1) + ')')[0].text.replace('\xa0', '').replace(' ', '')
 
-                            user_info[user_compct_info_title] = user_compct_info_value
-                            print(user_compct_info_title, ':', user_info[user_compct_info_title])
+                                        user_info[user_compct_info_title] = user_compct_info_value
+                                        print(user_compct_info_title, ':', user_info[user_compct_info_title])
 
-                except Exception as e:
-                    logger.exception(msg=e)
-                    print('크롤링 대상이 없습니다.--> ', e)
-                # 정보 제공량 별 점수 산출
-                print()
-                driver.get('https://story.kakao.com/' + user)
-                WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, "div.feed")))
+                            except Exception as e:
+                                logger.exception(msg=e)
+                                print('크롤링 대상이 없습니다.--> ', e)
+                            # 정보 제공량 별 점수 산출
+                            print()
+                            driver.get('https://story.kakao.com/' + user)
+                            WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, "div.feed")))
 
-                post_soup = auto_scroll(driver)
+                            post_soup = auto_scroll(driver)
 
-                all_like_cnt = 0
-                all_reply_cnt = 0
-                all_share_cnt = 0
-                all_place_cnt = 0
-                all_up_cnt = 0
+                            all_like_cnt = 0
+                            all_reply_cnt = 0
+                            all_share_cnt = 0
+                            all_place_cnt = 0
+                            all_up_cnt = 0
 
-                post_wrapper = post_soup.select('div.feed > div > div')
-
-                for i in range(len(post_wrapper)):
-                    post_list = post_soup.select('div.feed > div > div:nth-of-type(' + str(i+1) + ') > div > div > div')
-                    for j in range(len(post_list)):
-                        try:
                             post_like_cnt = 0
                             post_comment_cnt = 0
                             post_share_cnt = 0
-                            # 날짜
-                            post_date = post_soup.select('div.feed > div > div:nth-of-type('
-                                                         + str(i + 1) + ') > div > div > div:nth-of-type('
-                                                         + str(j + 1) + ') .add_top > p > a')
-                            for a in post_date:
-                                post_date = a['title']
-                            post_date = post_date.replace('년', '-').replace('월', '-').replace("일", '').replace('오전', 'AM').\
-                                replace('오후', 'PM').replace(' ', '')
-                            post_date = datetime.strptime(post_date, '%Y-%m-%d%p%I:%M')
-                            post_date = post_date.strftime('%Y-%m-%d')
-                            # print('게시글 날짜 :', post_date)
+                            post_up_cnt = 0
 
-                            # 본문
-                            post_text = post_soup.select('div.feed > div > div:nth-of-type('
-                                                         + str(i+1) + ') > div > div > div:nth-of-type('
-                                                         + str(j+1) + ') .txt_wrap')[0].text
-                            # print('본문 :', post_text)
+                            post_date_cnt = 0
+                            regular = 0
+                            rating = 0
 
-                            # 장소
-                            try:
-                                post_place = post_soup.select('div.feed > div > div:nth-of-type('
-                                                              + str(i+1) + ') > div > div > div:nth-of-type('
-                                                              + str(j+1) + ') .place'
-                                                              )[0].text.replace('에서', '').replace(' ', '')
-                                if '님과함께' in post_place:
-                                    pass
-                                    # print('장소 : 없음')
-                                else:
-                                    all_place_cnt += 1
-                                    # print('장소 :', post_place)
-                            except IndexError:
-                                pass
-                                # print('장소 : 없음', e)
+                            post_wrapper = post_soup.select('div.feed > div > div')
 
-                            # 좋아요 수
-                            try:
-                                post_like_cnt = post_soup.select('div.feed > div > div:nth-of-type('
-                                                                 + str(i + 1) + ') > div > div > div:nth-of-type('
-                                                                 + str(j + 1) + ') ._likeCount')[0].text.replace(',', '')
-                                # print('좋아요 :', post_like_cnt)
-                                all_like_cnt += int(post_like_cnt)
-                            except IndexError:
-                                # print('좋아요 없음', e)
-                                pass
+                            for i in range(len(post_wrapper)):
+                                post_list = post_soup.select('div.feed > div > div:nth-of-type(' + str(i+1) + ') > div > div > div')
+                                for j in range(len(post_list)):
+                                    try:
+                                        # 날짜
+                                        post_date = post_soup.select('div.feed > div > div:nth-of-type('
+                                                                     + str(i + 1) + ') > div > div > div:nth-of-type('
+                                                                     + str(j + 1) + ') .add_top > p > a')
+                                        for a in post_date:
+                                            post_date = a['title']
+                                        post_date = post_date.replace('년', '-').replace('월', '-').replace("일", '').replace('오전', 'AM').\
+                                            replace('오후', 'PM').replace(' ', '')
+                                        post_date = datetime.strptime(post_date, '%Y-%m-%d%p%I:%M')
+                                        post_date = post_date.strftime('%Y-%m-%d')
+                                        # print('게시글 날짜 :', post_date)
 
-                            # 댓글 수
-                            try:
-                                post_comment_cnt = post_soup.select('div.feed > div > div:nth-of-type('
-                                                                    + str(i + 1) + ') > div > div > div:nth-of-type('
-                                                                    + str(j + 1) + ') ._commentCount')[0].text.replace(',', '')
-                                # print('댓글 :', post_comment_cnt)
-                                all_reply_cnt += int(post_comment_cnt)
-                            except IndexError:
-                                pass
-                                # print('댓글 없음', e)
+                                        # 본문
+                                        post_text = post_soup.select('div.feed > div > div:nth-of-type('
+                                                                     + str(i+1) + ') > div > div > div:nth-of-type('
+                                                                     + str(j+1) + ') .txt_wrap')[0].text
+                                        # print('본문 :', post_text)
 
-                            # 공유 수
+                                        # 장소
+                                        try:
+                                            post_place = post_soup.select('div.feed > div > div:nth-of-type('
+                                                                          + str(i+1) + ') > div > div > div:nth-of-type('
+                                                                          + str(j+1) + ') .place'
+                                                                          )[0].text.replace('에서', '').replace(' ', '')
+                                            if '님과함께' in post_place:
+                                                pass
+                                                # print('장소 : 없음')
+                                            else:
+                                                all_place_cnt += 1
+                                        except IndexError:
+                                            pass
+
+                                        # 좋아요 수
+                                        try:
+                                            post_like_cnt = post_soup.select('div.feed > div > div:nth-of-type('
+                                                                             + str(i + 1) + ') > div > div > div:nth-of-type('
+                                                                             + str(j + 1) + ') ._likeCount')[0].text.replace(',', '')
+                                            post_like_cnt = int(post_like_cnt)
+                                            all_like_cnt += post_like_cnt
+                                        except IndexError:
+                                            pass
+
+                                        # 댓글 수
+                                        try:
+                                            post_comment_cnt = post_soup.select('div.feed > div > div:nth-of-type('
+                                                                                + str(i + 1) + ') > div > div > div:nth-of-type('
+                                                                                + str(j + 1) + ') ._commentCount')[0].text.replace(',', '')
+                                            post_comment_cnt = int(post_comment_cnt)
+                                            all_reply_cnt += post_comment_cnt
+                                        except IndexError:
+                                            pass
+
+                                        # 공유 수
+                                        try:
+                                            post_share_cnt = post_soup.select('div.feed > div > div:nth-of-type('
+                                                                              + str(i + 1) + ') > div > div > div:nth-of-type('
+                                                                              + str(j + 1) + ') ._storyShareCount')[0].text.replace(',', '')
+                                            post_share_cnt = int(post_share_cnt)
+                                            all_share_cnt += post_share_cnt
+                                        except IndexError:
+                                            pass
+                                        #  up 수
+                                        try:
+                                            post_up_cnt = post_soup.select('div.feed > div > div:nth-of-type('
+                                                                           + str(i + 1) + ') > div > div > div:nth-of-type('
+                                                                           + str(j + 1) + ') ._sympathyCount')[0].text.replace(',', '')
+                                            post_up_cnt = int(post_up_cnt)
+                                            all_up_cnt += post_up_cnt
+                                        except IndexError:
+                                            pass
+
+                                        # 현재 날짜, 월
+                                        current_month = '%s-%s' % (now.year, now.month)
+                                        current_month = datetime.strptime(current_month, '%Y-%m')
+                                        current_month = current_month.strftime('%Y-%m')
+                                        # 전 달 날짜, 월
+                                        last_month = '%s-%s' % (now.year, now.month - 1)
+                                        last_month = datetime.strptime(last_month, '%Y-%m')
+                                        last_month = last_month.strftime('%Y-%m')
+                                        # 게시물 날짜, 월
+                                        post_date_month = str(post_date)[:7]
+
+                                        if current_month == post_date_month:
+                                            post_date_cnt += 1
+                                        elif last_month == post_date_month:
+                                            post_date_cnt += 1
+                                        else:
+                                            pass
+                                        if str(start_date[idx]) <= post_date <= str(end_date[idx]):
+                                            db = db_mysql_connection_SCI.DatabaseConnection()
+                                            db.post_insert(
+                                                str(origin_ph[idx]),
+                                                'kakaoStory',
+                                                str(user),
+                                                str(post_text),
+                                                post_like_cnt,
+                                                post_comment_cnt,
+                                                post_share_cnt,
+                                                post_up_cnt,
+                                                str(post_date)
+                                            )
+                                        else:
+                                            pass
+                                    except Exception as e:
+                                        print('게시글 에러', e)
+
+                            rating = all_like_cnt + all_reply_cnt + all_share_cnt
                             try:
-                                post_share_cnt = post_soup.select('div.feed > div > div:nth-of-type('
-                                                                  + str(i + 1) + ') > div > div > div:nth-of-type('
-                                                                  + str(j + 1) + ') ._storyShareCount')[0].text.replace(',', '')
-                                # print('공유 :', post_share_cnt)
-                                all_share_cnt += int(post_share_cnt)
-                            except IndexError:
-                                # print('공유 없음', e)
-                                pass
-                            #  up 수
+                                regular = user_info['스토리'] // all_reply_cnt
+                            except Exception as e:
+                                regular = 0
+
+                            user_info['컨텐츠관리일정성'] = post_date_cnt
+                            user_info['지속적교류'] = regular
+                            user_info['평가지수'] = rating
+
+                            print('총 좋아요 :', all_like_cnt)
+                            print('총 댓글 :', all_reply_cnt)
+                            print('총 공유 :', all_share_cnt)
+                            print('총 장소 :', all_place_cnt)
+                            print('총 up :', all_up_cnt)
+                            print()
+                            driver.get('https://story.kakao.com/' + user + '/photos')
+                            photo_soup = auto_scroll(driver)
                             try:
-                                post_up_cnt = post_soup.select('div.feed > div > div:nth-of-type('
-                                                               + str(i + 1) + ') > div > div > div:nth-of-type('
-                                                               + str(j + 1) + ') ._sympathyCount')[0].text.replace(',', '')
-                                # print('up :', post_up_cnt)
-                                all_up_cnt += int(post_up_cnt)
-                            except IndexError:
-                                # print('up 없음', e)
-                                pass
-                            # print()
-                            if start_date <= post_date <= end_date:
+                                photo_cnt = int(len(photo_soup.select('._listContainer > div')))
+                                print('사진 수 :', photo_cnt)
+                                user_info['사진'] = photo_cnt
+                            except Exception as e:
+                                print('사진 없음', e)
+
+                            driver.get('https://story.kakao.com/' + user + '/videos')
+                            video_soup = auto_scroll(driver)
+                            try:
+                                video_cnt = int(len(video_soup.select('._listContainer > div')))
+                                print('동영상 수 :', video_cnt)
+                                user_info['동영상'] = video_cnt
+                            except Exception as e:
+                                print('동영상 없음', e)
+
+                            driver.get('https://story.kakao.com/' + user + '/locations')
+                            locations_soup = auto_scroll(driver)
+                            try:
+                                locations_cnt = int(len(locations_soup.select('._listContainer > div')))
+                                print('장소 수 :', locations_cnt)
+                                user_info['장소'] = locations_cnt
+                            except Exception as e:
+                                print('장소 없음', e)
+
+                            driver.get('https://story.kakao.com/' + user + '/favorites')
+                            favorites_soup = auto_scroll(driver)
+                            try:
+                                favorites_cnt = int(len(favorites_soup.select('._listContainer > div')))
+                                print('관심글 수 :', favorites_cnt)
+                                user_info['관심글'] = favorites_cnt
+                            except Exception as e:
+                                print('관심글 없음', e)
+
+                            driver.get('https://story.kakao.com/' + user + '/up')
+                            up_soup = auto_scroll(driver)
+                            try:
+                                up_cnt = int(len(up_soup.select('._listContainer > div')))
+                                print('up 한 글 수 :', up_cnt)
+                                user_info['up한글'] = up_cnt
+                            except Exception as e:
+                                print('up 한 글 없음', e)
+
+                            driver.get('https://story.kakao.com/' + user + '/following')
+                            up_soup = auto_scroll(driver)
+                            try:
+                                following_cnt = int(len(up_soup.select('._listContainer > li')))
+                                print('소식받는 수 :', following_cnt)
+                                user_info['소식받는수'] = following_cnt
+                            except Exception as e:
+                                print('소식 없음', e)
+
+                            print('[', user_info['이름'], '님의 카카오스토리 크롤링 결과', ']')
+                            print(user_info)
+
+                            expressRateResult = exprs.ExpressionEngine.expressionFind(exprs.ExpressionEngine)
+                            print("expressResult :", expressRateResult)
+
+                            post_cnt = int(user_info['스토리'].replace(",", "").replace("개", ""))
+
+                            # DB insert
+                            try:
+                                # Server Connection to MySQL
                                 db = db_mysql_connection_SCI.DatabaseConnection()
-                                db.post_insert(
-                                    'kakaoStory',
-                                    user,
-                                    str(post_text),
-                                    str(post_like_cnt),
-                                    str(post_comment_cnt),
-                                    str(post_share_cnt),
-                                    post_date
+                                db.kakao_insert(
+                                    str(origin_ph[idx]),                                                     # origin_ph
+                                    'kakao',                                                         # platform
+                                    user,                                                           # page_id
+                                    str(user_info['이름']),                                           # username
+                                    str(user_info['성별']),                                           # gender
+                                    str(user_info['거주지']),                                         # address
+                                    str(user_info['생일']),                                           # birthday
+                                    str(user_info['직장']),                                           # company1
+                                    str(user_info['학교']),                                           # university1
+                                    expressRateResult[0],
+                                    expressRateResult[1],
+                                    user_info['소식받는수'],                                      # take_news
+                                    user_info['관심글'],                                         # post_interest
+                                    user_info['up한글'],                                         # post_up
+                                    all_like_cnt,                                               # feeling_cnt
+                                    all_reply_cnt,                                              # comment_cnt
+                                    all_share_cnt,                                              # share_cnt
+                                    user_info['장소'],                                           # place_cnt
+                                    all_place_cnt,                                              # place_add
+                                    post_cnt,                                                   # post_cnt
+                                    user_info['사진'],                                           # photo_cnt
+                                    user_info['동영상'],                                         # video_cnt
+                                    user_info['컨텐츠관리일정성'],
+                                    user_info['지속적교류'],
+                                    user_info['평가지수']
                                 )
-                            else:
-                                pass
-                        except Exception as e:
-                            print('게시글 에러', e)
-                print('총 좋아요 :', all_like_cnt)
-                print('총 댓글 :', all_reply_cnt)
-                print('총 공유 :', all_share_cnt)
-                print('총 장소 :', all_place_cnt)
-                print('총 up :', all_up_cnt)
-                print()
-                driver.get('https://story.kakao.com/' + user + '/photos')
-                photo_soup = auto_scroll(driver)
-                try:
-                    photo_cnt = int(len(photo_soup.select('._listContainer > div')))
-                    print('사진 수 :', photo_cnt)
-                    user_info['사진'] = photo_cnt
-                except Exception as e:
-                    print('사진 없음', e)
-
-                driver.get('https://story.kakao.com/' + user + '/videos')
-                video_soup = auto_scroll(driver)
-                try:
-                    video_cnt = int(len(video_soup.select('._listContainer > div')))
-                    print('동영상 수 :', video_cnt)
-                    user_info['동영상'] = video_cnt
-                except Exception as e:
-                    print('동영상 없음', e)
-
-                driver.get('https://story.kakao.com/' + user + '/locations')
-                locations_soup = auto_scroll(driver)
-                try:
-                    locations_cnt = int(len(locations_soup.select('._listContainer > div')))
-                    print('장소 수 :', locations_cnt)
-                    user_info['장소'] = locations_cnt
-                except Exception as e:
-                    print('장소 없음', e)
-
-                driver.get('https://story.kakao.com/' + user + '/favorites')
-                favorites_soup = auto_scroll(driver)
-                try:
-                    favorites_cnt = int(len(favorites_soup.select('._listContainer > div')))
-                    print('관심글 수 :', favorites_cnt)
-                    user_info['관심글'] = favorites_cnt
-                except Exception as e:
-                    print('관심글 없음', e)
-
-                driver.get('https://story.kakao.com/' + user + '/up')
-                up_soup = auto_scroll(driver)
-                try:
-                    up_cnt = int(len(up_soup.select('._listContainer > div')))
-                    print('up 한 글 수 :', up_cnt)
-                    user_info['up한글'] = up_cnt
-                except Exception as e:
-                    print('up 한 글 없음', e)
-
-                driver.get('https://story.kakao.com/' + user + '/following')
-                up_soup = auto_scroll(driver)
-                try:
-                    following_cnt = int(len(up_soup.select('._listContainer > li')))
-                    print('소식받는 수 :', following_cnt)
-                    user_info['소식받는수'] = following_cnt
-                except Exception as e:
-                    print('소식 없음', e)
-
-                kakao_story_t_value = 0
-                kakao_story_c_value = 0
-                kakao_story_m_value = 0
-                print('[ 점수 ]')
-
-                if '성별' in user_info:
-                    if user_info['성별'] == '남성':
-                        print('성별 남성 : 20점이 부여되었습니다.')
-                        kakao_story_t_value += 20
-
-                    elif user_info['성별'] == '여성':
-                        kakao_story_t_value += 10
-                        print('성별 여성 : 10점이 부여되었습니다.')
-                else:
-                    print('성별이 공개되지 않았습니다.')
-
-                if '한줄음악' in user_info:
-                    print('카카오 뮤직 공개 : 20점이 부여되었습니다.')
-                    kakao_story_c_value += 20
-                else:
-                    print('카카오 뮤직 비공개 : 0점이 부여되었습니다.')
-
-                if '거주지' in user_info:
-                    print('거주지 정보 공개')
-                    if '서울' in user_info['거주지']:
-                        print('거주지 정보- 서울 : 50점이 부여되었습니다.')
-                        kakao_story_t_value += 50
-                    elif '경기' in user_info['거주지']:
-                        print('거주지 정보- 경기 : 30점이 부여되었습니다.')
-                        kakao_story_t_value += 30
-                    else:
-                        print('거주지 정보- 비수도권 : 15점이 부여되었습니다.')
-                        kakao_story_t_value += 15
-                else:
-                    print('거주지 정보 비공개')
-
-                if '스토리' in user_info:
-                    print('게시 스토리 개수 공개')
-
-                    try:
-                        kstory_count_str = user_info['스토리'].split('개')[0]
-                        kstory_count_int = int(kstory_count_str.replace(",", ""))
-
-                        if kstory_count_int >= 200:
-                            print('게시 스토리 개수 200개 이상')
-                            kakao_story_m_value += 50
-                        elif kstory_count_int < 200:
-                            print('게시 스토리 개수 200개 미만')
-                            kakao_story_m_value += 30
-
-                    except Exception as ex:
-                        print('스토리 개수 표시가 \"~개\" 로 표시되어 있지 않습니다. 단순 숫자로 표시')
-                        if int(user_info['스토리']) >= 200:
-                            print('게시 스토리 개수 200개 이상')
-                            kakao_story_m_value += 50
-                        elif int(user_info['스토리']) < 200:
-                            print('게시 스토리 개수 200개 미만')
-                            kakao_story_m_value += 30
-                            print(ex)
-                else:
-                    print('게시 스토리 개수 비공개')
-
-                if '학교' in user_info:
-                    univ_list = ['서울대학교', '중앙대학교', '덕성여자대학교', '건국대학교', '서울교육대학교', '홍익대학교',
-                                 '이화여자대학교', '서울시립대학교', '동국대학교', '서울여자대학교', '연세대학교', '명지대학교',
-                                 '숙명여학교', '고려대학교', '상명대학교', '동덕여자대학교', '서강대학교', '삼육대학교', '국민대학교',
-                                 '서울과학기술대학교', '한국체육대학교', '성신여자대학교', '한국외국어대학교', '숭실대학교', '총신대학교',
-                                 '세종대학교', '한국종합예술학교', '한성대학교', '서경대학교', '성공회대학교']
-
-                    user_edu_history = user_info['학교']
-                    if '학교' in user_edu_history:
-                        if user_edu_history in univ_list:
-                            print('학력 정보- in 서울')
-                            kakao_story_t_value += 50
-
+                            except Exception as e_maria:
+                                logger.error(msg=e_maria)
+                            f = open('kakaoStory_user.txt', mode='at', encoding='utf-8')
+                            f.write('_' + user + '_\n')
+                            f.close()
+                            end_time = time.time() - start_time_all
+                            print('크롤링 시간 :', end_time)
                         else:
-                            print('학력 정보- not in 서울')
-                            kakao_story_t_value += 30
+                            print('origin name, kakao name 불일치')
+                            try:
+                                # Server Connection to MySQL
+                                db = db_mysql_connection_SCI.DatabaseConnection()
+                                db.mismatch(
+                                    str(origin_ph[idx]),                                 # origin_ph
+                                    'kakao',                                             # platform
+                                    str(origin_name[idx]),                          # origin_name
+                                    str(kakao_name),                                           # platform_name
+                                    str(user),                                           # url
+                                )
+                            except Exception as e_maria:
+                                logger.error(msg=e_maria)
+                    except Exception as e:
+                        print('에러', e)
                 else:
-                    print('학력 정보 비공개')
-                    user_info['학교'] = ''
-
-                    user_info['kk_TSCORE'] = kakao_story_t_value
-                    user_info['kk_CSCORE'] = kakao_story_c_value
-                    user_info['kk_MSCORE'] = kakao_story_m_value
-                print('[', user_info['이름'], '님의 카카오스토리 크롤링 결과', ']')
-                print(user_info)
-                # DB insert
-                try:
-                    # Server Connection to MySQL
-                    db = db_mysql_connection_SCI.DatabaseConnection()
-                    db.kakao_insert(
-                        'kakao',                                                         # platform
-                        user,                                                           # page_id
-                        str(user_info['이름']),                                           # username
-                        str(user_info['성별']),                                           # gender
-                        str(user_info['거주지']),                                         # address
-                        str(user_info['생일']),                                           # birthday
-                        str(user_info['직장']),                                           # company1
-                        str(user_info['학교']),                                           # university1
-                        'expression_negative',
-                        'expression_positive',
-                        str(user_info['소식받는수']),                                      # take_news
-                        str(user_info['관심글']),                                         # post_interest
-                        str(user_info['up한글']),                                         # post_up
-                        str(all_like_cnt),                                               # feeling_cnt
-                        str(all_reply_cnt),                                              # comment_cnt
-                        str(all_share_cnt),                                              # share_cnt
-                        str(user_info['장소']),                                           # place_cnt
-                        str(all_place_cnt),                                              # place_add
-                        str(user_info['스토리'].replace(",", "").replace("개", "")),      # post_cnt
-                        str(user_info['사진']),                                           # photo_cnt
-                        str(user_info['동영상']),                                         # video_cnt
-                        'operation_year_period',
-                        'friends_continuous_exchange',
-                        'friends_rating_index',
-                        'friends_correlation_score',
-                        'contents_regular'
-                        # user_info['한줄소개']
-                        # user_info['한줄음악']
-                        # user_info['up']
-                    )
-                except Exception as e_maria:
-                    logger.error(msg=e_maria)
-                f = open('kakaoStory_user.txt', mode='at', encoding='utf-8')
-                f.write('_' + user + '_\n')
-                f.close()
-            except Exception as e:
-                print('아이디 존재 x')
+                    print(user + ' : 이미 크롤링 한 데이터')
+            else:
+                print('카카오스토리 계정 없음')
         else:
-            print(user + ' : 이미 크롤링 한 데이터')
+            print('설정한 인덱스가 아님')
     end_time = time.time() - start_time_all
 
     print()
@@ -544,13 +512,6 @@ def auto_scroll(driver):
     return auto_scroll_data_soup_html
 
 
-def main():
-    user_list = ['abc', 'dghs', 'maplekim', 'qubixx', '_0DMwY', 'ppang_madam', 'chezmoi_2013', 'editorh', 'sy_217', '_9Y2Ok3',
-                 'pepper_salt', 'wlsgmldml', 'dippydro', 'glila', 'cookieontheroad', 'suheeryu', 'sobook', 'akdmf72',
-                 'liliant', 'silverway', 'chezmoi_2013', 'lks1719', 'ateliersujin', 'jjaoyami', 'songah_jeju']
-    start_date = '2017-01-01'
-    end_date = '2018-01-01'
-    kakao_story_crawler_start(user_list, start_date, end_date)
+def main(user_list, origin_ph_list, origin_name_list, start_date, end_date):
+    kakao_story_crawler_start(user_list, start_date, end_date, origin_ph_list, origin_name_list)
 
-
-main()

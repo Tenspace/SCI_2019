@@ -8,7 +8,7 @@ from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
-from SCI_2019.crawlerbots import db_mysql_connection_SCI
+from crawlerbots import db_mysql_connection_SCI
 
 global returnValue_kks_CSVData
 global returnValue_kks_singleData
@@ -50,10 +50,11 @@ def feed(user_list):
 
     path = r"C:\Users\tenspace\Desktop\crawlerBot_package_SCI\chromedriver.exe"
     driver = webdriver.Chrome(options=options, executable_path=path)
-    r = open('instagram_user.txt', mode='rt', encoding='utf-8')
-    user_txt = r.read()
-    r.close()
+
     for user in user_list:
+        r = open('instagram_user.txt', mode='rt', encoding='utf-8')
+        user_txt = r.read()
+        r.close()
         if '_' + user + '_' not in user_txt:
             try:
                 url = 'https://www.instagram.com/' + user + '/'
@@ -299,6 +300,4 @@ def main():
     print()
     print('데이터 기반 크롤링 총 구동 시간 :', end_time)
 
-
-main()
 

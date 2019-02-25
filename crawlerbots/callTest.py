@@ -1,6 +1,6 @@
 # import crawlerBot_pack_SCI_2019.crawlerbots.expressionEngine as exprs
 # import crawlerBot_pack_SCI_2019.crawlerbots.generateNumEngine as gen
-from SCI_2019.crawlerbots import registeredRecorduser as userlist
+from crawlerbots import registeredRecorduser as userlist
 # expressionEngine.py
 # expressRateResult = exprs.ExpressionEngine.expressionFind(exprs.ExpressionEngine)
 # print("expressResult :", expressRateResult)
@@ -15,7 +15,7 @@ from SCI_2019.crawlerbots import registeredRecorduser as userlist
 # generateNumInstaResult = gen.GenNumEngine.getCntInfo_instagram(gen.GenNumEngine)
 # print(generateNumInstaResult)
 
-from crawlerBot_pack_SCI_2019.crawlerbots.registeredRecorduser import RegRecorduser
+from crawlerbots.registeredRecorduser import RegRecorduser
 
 regUser = RegRecorduser()
 

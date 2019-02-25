@@ -57,3 +57,34 @@
 # a = '2017-08-01'
 # b = '2018-08-01'
 # post_date2 = '2016-07-01'
+
+import re
+# user = 'https://www.facebook.com/profile.php?id=100005123796303&hc_location=friend_browser'
+# p = re.findall('=\w+&', user)
+# ida = p[0].replace('=', '').replace('&', '')
+#
+# print(ida)
+#
+# user = 'https://www.facebook.com/qmfforwnahd'
+# p = re.findall('\/\w+\s', user)
+# print(p)
+# ida = p[0].replace('/', '')
+#
+# print(ida)
+
+# user_page_id = ['profile.php?v=info&lst=100003275046658%3A100006691393038%3A1550719683&id=100006691393038&refid=17']
+# id_list = []
+# for page_id in user_page_id:
+#     id_list.append(page_id[0])
+#
+# p = re.findall('%\w+%', id_list[0])
+# print(p)
+# data='''{"hq-profile-logging": {"profile_id": 100015608505556, "profile_high_quality_metric": "action_bar_friend",
+#                                 "profile_session_token": "100006841668710:100015608505556:1550720931",
+#                                 "profile_surface_type": "action_bar", "profile_event_type": "click"}}'''
+# print(data)
+# data = dict(data)
+# print(data.get('hq-profile-logging').get('profile_id'))
+idx = 14301
+if idx > 11301 and idx < 14301:
+    print(idx)

@@ -10,7 +10,7 @@ class DatabaseConnection:
                 port=3306,
                 user='root',
                 password='1234',
-                db='crawling',
+                db='aster',
                 charset='utf8mb4')
 
             self.connection.autocommit = True
@@ -33,7 +33,7 @@ class DatabaseConnection:
                         video_cnt, operation_year_period, friends_continuous_exchange, friends_rating_index,
                         friends_correlation_score, contents_regular):
         try:
-            insert_command = """INSERT INTO crawler_score (
+            insert_command = """INSERT INTO facebook_score (
                              origin_ph, platform, page_id, username, gender, phone_number, birthday, address1, address2, address3,  
                              company1, company2, company3, university1, university2, university3, contact1, contact2,
                              expression_negative, expression_positive, friends_all, friends_residence,
@@ -76,8 +76,8 @@ class DatabaseConnection:
                      operation_year_period, friends_continuous_exchange, friends_rating_index,
                      contents_regular):
         try:
-            insert_command = """INSERT INTO crawler_score (
-                             origin_ph, platform, page_id, username, gender, phone_number, birthday, address1, address2, address3,  
+            insert_command = """INSERT INTO insta_score (
+                             origin_ph, platform, page_id, username, gender, phone_number, birthday, address1, address2, address3,
                              company1, company2, company3, university1, university2, university3, contact1, contact2,
                              expression_negative, expression_positive, friends_all, friends_residence,
                              friends_company, friends_univ, friends_highschool, friends_native, take_news,
@@ -111,13 +111,14 @@ class DatabaseConnection:
             print('db 에러', e)
 
     # INSERT kakao story
-    def kakao_insert(self, origin_ph, platform, page_id, username, gender, address, birthday, company, university, expression_negative,
-                     expression_positive, take_news, post_interest, post_up, feeling_cnt, comment_cnt, share_cnt,
-                     place_cnt, place_add, post_cnt, photo_cnt, video_cnt, operation_year_period,
-                     friends_continuous_exchange, friends_rating_index, friends_correlation_score, contents_regular):
+    def kakao_insert(self,  origin_ph, platform, page_id, username, gender, address, birthday, company, university,
+                     expression_negative, expression_positive, take_news, post_interest, post_up, feeling_cnt,
+                     comment_cnt, share_cnt, place_cnt, place_add, post_cnt, photo_cnt, video_cnt,
+                     friends_continuous_exchange, friends_rating_index, contents_regular):
         try:
-            insert_command = """INSERT INTO crawler_score (
-                             origin_ph, platform, page_id, username, gender, phone_number, birthday, address1, address2, address3,  
+            insert_command = """INSERT INTO kakaostory_score ( 
+                             origin_ph, platform, page_id, username, gender, phone_number, birthday, 
+                             address1, address2, address3,
                              company1, company2, company3, university1, university2, university3, contact1, contact2,
                              expression_negative, expression_positive, friends_all, friends_residence,
                              friends_company, friends_univ, friends_highschool, friends_native, take_news,
@@ -128,44 +129,59 @@ class DatabaseConnection:
                              photo_of_oneself_cnt, photo_cnt, album_cnt, album_category_cnt, video_tag_oneself_cnt,
                              video_cnt, operation_year_period, friends_continuous_exchange, friends_rating_index,
                              friends_correlation_score, contents_regular
-                             ) VALUES ( %s,
+                             ) VALUES ( 
+                             %s,
                              %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,
                              %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,
                              %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                             """
 
             print('insert ok', insert_command)
-            self.cursor.execute(insert_command, (origin_ph, platform, page_id, username, gender, None, birthday, address, None,
+            self.cursor.execute(insert_command, (origin_ph, platform, page_id, username, gender, None,
+                                                 birthday, address, None,
                                                  None, company, None, None, university, None, None, None, None,
                                                  expression_negative, expression_positive, None, None, None, None, None,
                                                  None, take_news, post_interest, post_up, feeling_cnt, None, None, None,
                                                  None, None, None, None, None, None, None, None, None, None, None, None,
                                                  comment_cnt, share_cnt, place_cnt, place_add, post_cnt, None,
-                                                 photo_cnt, None, None, None, video_cnt, operation_year_period,
+                                                 photo_cnt, None, None, None, video_cnt, None,
                                                  friends_continuous_exchange, friends_rating_index,
-                                                 friends_correlation_score, contents_regular))
+                                                 None, contents_regular))
             self.connection.commit()
             self.connection.close()
 
         except Exception as e:
             print('db 에러', e)
 
-    def post_insert(self, origin_ph, platform, page_id, post_text, post_like, post_reply, post_share, post_date):
+    def post_insert(self, origin_ph, platform, page_id, post_text, post_like, post_reply, post_share, post_up, post_date):
         try:
-            insert_command = """INSERT INTO post (
-                             origin_ph, platform, page_id, post_text, post_like, post_reply, post_share, post_date
+            insert_command = """INSERT INTO post ( 
+                             origin_ph, platform, page_id, post_text, post_like, post_reply, post_share, post_up, post_date
                              ) VALUES(
-                             %s, %s, %s, %s, %s, %s, %s, %s)
+                             %s, %s, %s, %s, %s, %s, %s, %s, %s)
                             """
             # print('insert ok', insert_command)
-            self.cursor.execute(insert_command, (origin_ph, platform, page_id, post_text, post_like, post_reply, post_share, post_date))
+            self.cursor.execute(insert_command, (origin_ph, platform, page_id, post_text, post_like, post_reply, post_share, post_up, post_date))
             self.connection.commit()
             self.connection.close()
 
         except Exception as e:
             print('db 에러', e)
 
+    def mismatch(self, origin_ph, platform, origin_name, platform_name, url):
+        try:
+            insert_command = """INSERT INTO mismatch ( 
+                             origin_ph, platform, origin_name, platform_name, url
+                             ) VALUES(
+                             %s, %s, %s, %s, %s)
+                            """
+            # print('insert ok', insert_command)
+            self.cursor.execute(insert_command, (origin_ph, platform, origin_name, platform_name, url))
+            self.connection.commit()
+            self.connection.close()
 
+        except Exception as e:
+            print('db 에러', e)
 
 
 
